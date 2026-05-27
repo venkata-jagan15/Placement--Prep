@@ -1,0 +1,1677 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ultimate C++ DSA Interview Guide - Deep Edition</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&family=Fira+Code:wght@400;500&display=swap');
+        
+        :root {
+            --bg-dark: #0a0f1a;
+            --bg-card: #151b2b;
+            --text-main: #e2e8f0;
+            --text-muted: #94a3b8;
+            --accent-cyan: #06b6d4;
+            --accent-blue: #3b82f6;
+            --accent-purple: #8b5cf6;
+            --border-color: #1e293b;
+            --success: #10b981;
+            --warning: #f59e0b;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-dark);
+            color: var(--text-main);
+            line-height: 1.7;
+            display: flex;
+            overflow-x: hidden;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            width: 300px;
+            height: 100vh;
+            position: fixed;
+            background: rgba(21, 27, 43, 0.95);
+            backdrop-filter: blur(12px);
+            border-right: 1px solid var(--border-color);
+            padding: 2rem 1rem;
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+            z-index: 100;
+            overflow-y: auto;
+        }
+
+        .sidebar h2 {
+            font-weight: 800;
+            background: linear-gradient(45deg, var(--accent-cyan), var(--accent-purple));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 1rem;
+            text-align: center;
+        }
+
+        .nav-links {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .nav-links li a {
+            text-decoration: none;
+            color: var(--text-muted);
+            font-weight: 600;
+            padding: 0.75rem 1rem;
+            border-radius: 8px;
+            display: block;
+            transition: all 0.3s ease;
+        }
+
+        .nav-links li a:hover, .nav-links li a.active {
+            background: rgba(59, 130, 246, 0.1);
+            color: var(--accent-cyan);
+            padding-left: 1.5rem;
+        }
+
+        /* Main Content */
+        .main-content {
+            margin-left: 300px;
+            padding: 3rem 5rem;
+            flex: 1;
+            max-width: calc(100vw - 300px);
+        }
+
+        section {
+            margin-bottom: 6rem;
+            animation: fadeIn 0.8s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        h1 {
+            font-size: 3.5rem;
+            margin-bottom: 1rem;
+            color: #fff;
+            line-height: 1.2;
+        }
+        
+        h2 {
+            font-size: 2.5rem;
+            margin-bottom: 2rem;
+            border-bottom: 2px solid var(--border-color);
+            padding-bottom: 0.5rem;
+            color: var(--accent-blue);
+        }
+
+        h3 {
+            font-size: 1.8rem;
+            margin: 2rem 0 1rem;
+            color: var(--accent-cyan);
+        }
+        
+        h4 {
+            font-size: 1.3rem;
+            margin: 1.5rem 0 0.8rem;
+            color: var(--text-main);
+            border-left: 4px solid var(--accent-purple);
+            padding-left: 10px;
+        }
+
+        p {
+            margin-bottom: 1.2rem;
+            color: var(--text-muted);
+        }
+        
+        ul, ol {
+            margin-bottom: 1.5rem;
+            padding-left: 1.5rem;
+            color: var(--text-muted);
+        }
+        
+        li {
+            margin-bottom: 0.5rem;
+        }
+
+        /* Code Blocks */
+        pre {
+            background: #0f1423;
+            padding: 1.5rem;
+            border-radius: 12px;
+            border: 1px solid var(--border-color);
+            overflow-x: auto;
+            margin-bottom: 1.5rem;
+            position: relative;
+        }
+
+        code {
+            font-family: 'Fira Code', monospace;
+            color: #a5b4fc;
+            font-size: 0.95rem;
+        }
+        
+        .inline-code {
+            background: #1e293b;
+            padding: 0.2rem 0.4rem;
+            border-radius: 4px;
+            color: #cbd5e1;
+            font-family: 'Fira Code', monospace;
+            font-size: 0.9rem;
+        }
+
+        /* Cards & Accordions */
+        .card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 2.5rem;
+            margin-bottom: 2.5rem;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        .accordion {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            margin-bottom: 1rem;
+            overflow: hidden;
+        }
+
+        .accordion-header {
+            padding: 1.5rem 2rem;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: rgba(255, 255, 255, 0.02);
+            transition: background 0.3s ease;
+        }
+
+        .accordion-header:hover {
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        .accordion-header h3 {
+            margin: 0;
+            color: var(--text-main);
+            font-size: 1.4rem;
+        }
+
+        .accordion-content {
+            padding: 0 2rem;
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.5s ease-in-out, padding 0.5s ease-in-out;
+            background: rgba(0, 0, 0, 0.1);
+        }
+
+        .accordion.active .accordion-content {
+            padding: 2rem;
+            max-height: 8000px; /* large enough for deep content */
+        }
+
+        /* Links & Buttons */
+        a {
+            color: var(--accent-cyan);
+            text-decoration: none;
+            transition: color 0.2s;
+        }
+
+        a:hover {
+            color: var(--accent-blue);
+            text-decoration: underline;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 0.6rem 1.2rem;
+            background: rgba(59, 130, 246, 0.1);
+            color: var(--accent-cyan);
+            border: 1px solid var(--accent-cyan);
+            border-radius: 6px;
+            font-weight: 600;
+            text-decoration: none;
+            margin-right: 0.5rem;
+            margin-bottom: 0.5rem;
+            transition: all 0.2s;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            background: var(--accent-cyan);
+            color: var(--bg-dark);
+            text-decoration: none;
+        }
+        
+        .resource-links {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin: 15px 0 25px 0;
+        }
+
+        .practice-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 12px;
+            margin-top: 15px;
+        }
+
+        .practice-list a {
+            display: flex;
+            align-items: center;
+            padding: 12px 15px;
+            background: #1e293b;
+            border-radius: 8px;
+            font-size: 0.95rem;
+            border: 1px solid transparent;
+            color: var(--text-main);
+            transition: all 0.2s;
+        }
+
+        .practice-list a:hover {
+            border-color: var(--accent-purple);
+            background: rgba(139, 92, 246, 0.1);
+            text-decoration: none;
+            transform: translateX(5px);
+        }
+
+        .badge {
+            background: var(--accent-blue);
+            color: white;
+            padding: 2px 8px;
+            border-radius: 12px;
+            font-size: 0.8rem;
+            margin-left: 10px;
+            font-weight: 600;
+        }
+
+        /* Callout / Info boxes */
+        .info-box {
+            background: rgba(6, 182, 212, 0.1);
+            border-left: 4px solid var(--accent-cyan);
+            padding: 1.5rem;
+            border-radius: 0 8px 8px 0;
+            margin: 1.5rem 0;
+        }
+        
+        .info-box.warning {
+            background: rgba(245, 158, 11, 0.1);
+            border-left-color: var(--warning);
+        }
+
+        .info-box h4 {
+            margin-top: 0;
+            color: var(--accent-cyan);
+            border: none;
+            padding: 0;
+        }
+        
+        .info-box.warning h4 {
+            color: var(--warning);
+        }
+
+        /* Table */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 2rem;
+            background: var(--bg-card);
+            border-radius: 8px;
+            overflow: hidden;
+        }
+        
+        th, td {
+            padding: 1.2rem;
+            text-align: left;
+            border-bottom: 1px solid var(--border-color);
+        }
+        
+        th {
+            background: rgba(255,255,255,0.05);
+            color: var(--accent-cyan);
+            font-weight: 600;
+        }
+        
+        tr:hover td {
+            background: rgba(255,255,255,0.02);
+        }
+
+        @media (max-width: 1024px) {
+            .sidebar {
+                transform: translateX(-100%);
+                transition: transform 0.3s ease;
+            }
+            .main-content {
+                margin-left: 0;
+                padding: 2rem;
+                max-width: 100vw;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <nav class="sidebar">
+        <h2>DSA Master<br><span style="font-size:0.5em;color:var(--text-muted)">Deep Dive Edition</span></h2>
+        <ul class="nav-links">
+            <li><a href="#intro" class="active">Introduction</a></li>
+            <li><a href="#cpp-basics">C++ Fundamentals</a></li>
+            <li><a href="#cpp-advanced">C++ Advanced Theory</a></li>
+            <li><a href="#stl-deep">STL Deep Dive</a></li>
+            <li><a href="#patterns">20 DSA Patterns</a></li>
+            <li><a href="#complexity">Time Complexity Mastery</a></li>
+        </ul>
+    </nav>
+
+    <main class="main-content">
+        <section id="intro">
+            <h1>Infosys L1 Prep Guide:<br>The Deep Dive</h1>
+            <p>Welcome to the ultimate, exhaustive preparation dashboard. This document does not just give you syntax; it provides <strong>deep theoretical understanding</strong> and <strong>concrete use cases</strong> for every C++ feature, STL container, and DSA pattern you will need.</p>
+        </section>
+
+        <!-- C++ Fundamentals -->
+        <section id="cpp-basics">
+            <h2>C++ Fundamentals & Memory</h2>
+            
+            <div class="card">
+                <h3>1. Compilation & Execution Theory</h3>
+                <div class="info-box">
+                    <h4>How C++ Works</h4>
+                    <p>Unlike Python (interpreted) or Java (bytecode/JVM), C++ code is <strong>compiled directly to machine code</strong>. This makes it incredibly fast, which is why it's heavily used in Competitive Programming and high-performance systems.</p>
+                    <p><strong>Pipeline:</strong> Preprocessing (expands #includes and macros) -> Compilation (converts to Assembly) -> Assembly (converts to object files .o/.obj) -> Linking (links libraries and object files to create an executable .exe/.out).</p>
+                </div>
+
+                <h3>2. Memory Management: Stack vs. Heap</h3>
+                <p>Understanding memory is the most critical part of C++ interviews.</p>
+                <ul>
+                    <li><strong>Stack Memory:</strong> Used for local variables and function calls. Fast allocation, limited size. Managed automatically (when variables go out of scope, they are popped).</li>
+                    <li><strong>Heap Memory:</strong> Used for dynamic allocation. Vast size, slower allocation. You must manage it manually using <span class="inline-code">new</span> and <span class="inline-code">delete</span>. Failure to do so causes memory leaks.</li>
+                </ul>
+                <pre><code>// Stack allocation
+int a = 10; 
+int arr[100]; // Size must be known at compile time
+
+// Heap allocation (Dynamic)
+int* ptr = new int(10); // Allocates single int on heap
+int* dynArr = new int[n]; // Size 'n' can be decided at runtime
+
+delete ptr; // Prevent memory leak
+delete[] dynArr; // Use delete[] for arrays</code></pre>
+
+                <h3>3. Pointers vs. References (The Deep Use Case)</h3>
+                <p><strong>Pointers:</strong> A variable that stores the memory address of another variable. <br><strong>References:</strong> An alias to an existing variable. It cannot be NULL and cannot be reassigned once initialized.</p>
+                <div class="info-box">
+                    <h4>Use Case in DSA: Passing by Reference</h4>
+                    <p>When you pass a large <span class="inline-code">std::vector</span> to a recursive function (like in Backtracking or DFS), if you pass by value, C++ creates a massive copy of the vector every single time. This turns an <code>O(N)</code> algorithm into <code>O(N^2)</code> and causes Time Limit Exceeded (TLE).</p>
+                    <p><strong>Solution:</strong> ALWAYS pass large structures by reference <code>&</code>.</p>
+                </div>
+                <pre><code>// WRONG for DSA (Pass by value - slow, makes copy)
+void dfs(vector<int> path, int node) { ... }
+
+// CORRECT for DSA (Pass by reference - fast, no copy)
+// Use 'const' if you don't intend to modify it to prevent bugs.
+void dfs(const vector<int>& path, int node) { ... }</code></pre>
+            </div>
+        </section>
+
+        <!-- C++ Advanced -->
+        <section id="cpp-advanced">
+            <h2>C++ Advanced Concepts (OOP & Modern C++)</h2>
+            
+            <div class="card">
+                <h3>1. Object-Oriented Theory (The 4 Pillars)</h3>
+                <ul>
+                    <li><strong>Encapsulation:</strong> Binding data and functions into a single unit (Class). Hiding internal states via <span class="inline-code">private</span> access modifiers to prevent unauthorized changes.</li>
+                    <li><strong>Abstraction:</strong> Exposing only necessary interfaces and hiding implementation details. Achieved using abstract classes and interfaces (classes with pure virtual functions).</li>
+                    <li><strong>Inheritance:</strong> Creating a new class from an existing class to promote code reusability.</li>
+                    <li><strong>Polymorphism:</strong> "Many forms". Compile-time (Method Overloading, Operator Overloading) and Run-time (Method Overriding using <span class="inline-code">virtual</span> keywords).</li>
+                </ul>
+                
+                <div class="info-box warning">
+                    <h4>Interview Question: What is a Virtual Function?</h4>
+                    <p>A virtual function is a member function declared in a base class and redefined (overridden) by a derived class. It ensures that the correct function is called for an object, regardless of the type of reference (or pointer) used for function call. This is resolved via a <strong>V-Table (Virtual Table)</strong> at runtime (Dynamic Dispatch).</p>
+                </div>
+                <pre><code>class Base {
+public:
+    virtual void show() { cout << "Base"; } // Virtual keyword
+    virtual ~Base() {} // Always make base destructors virtual!
+};
+
+class Derived : public Base {
+public:
+    void show() override { cout << "Derived"; } 
+};
+
+int main() {
+    Base* b = new Derived();
+    b->show(); // Output: "Derived" (Because of 'virtual')
+    delete b;
+}</code></pre>
+
+                <h3>2. Modern C++ (C++11 and beyond)</h3>
+                <p>Modern features that simplify competitive programming:</p>
+                <ul>
+                    <li><strong>auto keyword:</strong> Deduces type automatically. Great for complex iterators. <span class="inline-code">auto it = map.begin();</span></li>
+                    <li><strong>Range-based for loops:</strong> <span class="inline-code">for(int x : arr)</span> instead of traditional loops. Use <span class="inline-code">for(int& x : arr)</span> to modify elements.</li>
+                    <li><strong>Lambdas:</strong> Anonymous inline functions. Incredibly useful for custom sorting.</li>
+                </ul>
+                <pre><code>vector<pair<int, int>> v = {{1, 3}, {2, 2}, {3, 1}};
+// Sort based on the second element (ascending)
+sort(v.begin(), v.end(), [](const pair<int,int>& a, const pair<int,int>& b) {
+    return a.second < b.second;
+});</code></pre>
+            </div>
+        </section>
+
+        <!-- STL Deep Dive -->
+        <section id="stl-deep">
+            <h2>STL Deep Dive: The Encyclopedia</h2>
+            
+            <div class="card" style="text-align: center; padding: 4rem 2rem; background: linear-gradient(145deg, rgba(21,27,43,1) 0%, rgba(6,182,212,0.1) 100%); border: 1px solid var(--accent-cyan);">
+                <h3 style="font-size: 2rem; margin-top: 0; color: #fff;">The Ultimate STL Reference</h3>
+                <p style="font-size: 1.1rem; max-width: 600px; margin: 0 auto 2rem auto; color: var(--text-main);">
+                    Because the Standard Template Library is massive, I have generated a dedicated, exhaustive Encyclopedia for it. It contains <strong>every container</strong>, <strong>every method</strong>, detailed <strong>Time Complexities</strong>, and exactly when to use them.
+                </p>
+                <a href="cpp_stl_mastery.html" target="_blank" style="display: inline-block; padding: 1rem 2.5rem; background: var(--accent-blue); color: #fff; text-decoration: none; font-weight: 800; font-size: 1.2rem; border-radius: 50px; box-shadow: 0 10px 20px rgba(59, 130, 246, 0.3); transition: transform 0.2s, box-shadow 0.2s;">
+                    Open STL Encyclopedia
+                </a>
+                <p style="margin-top: 1.5rem; font-size: 0.9rem; color: var(--text-muted);">
+                    Opens in a new tab. Includes Vectors, Maps, Sets, Priority Queues, Deques, and Algorithms.
+                </p>
+            </div>
+        </section>
+
+        <!-- DSA Patterns -->
+        <section id="patterns">
+            <h2>The 20 Essential DSA Patterns</h2>
+            <p>Every problem is a variation of these core patterns. We break down the theory, variants, and exact approaches for each.</p>
+            
+            <div id="accordion-container">
+                <!-- Patterns injected by Python -->
+                
+    <div class="accordion">
+        <div class="accordion-header" onclick="toggleAccordion(this)">
+            <h3>1. Sliding Window</h3>
+            <span>▼</span>
+        </div>
+        <div class="accordion-content">
+            <h4>Deep Theory & Concept</h4>
+            <p>Instead of using nested loops to calculate sums of all possible subarrays (O(N^2)), we maintain a 'window' defined by a left and right pointer. As we expand the right pointer, we add to our running state. When a condition breaks, we shrink the left pointer. This visits every element at most twice (once by right, once by left), yielding O(N) time.</p>
+            
+            <h4>Common Variants</h4>
+            <pre style="background: rgba(0,0,0,0.2); border: none; padding: 1rem;"><code style="color: var(--text-muted);">1. Fixed Window (Find max sum of subarray of size K).
+2. Variable Window (Find longest subarray with sum < K).
+3. String Window (Longest substring with K distinct characters).</code></pre>
+            
+            <p><strong>How to Identify:</strong> Linear data structures (arrays, strings). Keywords: 'longest', 'shortest', 'maximum', 'minimum' subarray/substring. 'Contiguous sequence'.</p>
+            <p><strong>Approach to Solve:</strong> 1. Initialize left and right pointers at 0.
+2. Iterate right pointer and update state.
+3. While condition is invalid, update state removing left element and increment left.
+4. Update global answer (max/min length).</p>
+            
+            <h4>C++ Template</h4>
+            <pre><code>int variableSlidingWindow(vector&lt;int&gt;& arr, int target) {
+    int left = 0, right = 0, maxLen = 0, currentSum = 0;
+    while(right &lt; arr.size()) {
+        currentSum += arr[right]; // Add element at right pointer
+        
+        while(currentSum &gt; target) { // Condition violated, shrink from left
+            currentSum -= arr[left];
+            left++; 
+        }
+        maxLen = max(maxLen, right - left + 1); // Update best valid answer
+        right++; // Expand window
+    }
+    return maxLen;
+}</code></pre>
+            
+            <h4>Learning Resources</h4>
+            <div class="resource-links">
+                <a href="https://www.geeksforgeeks.org/window-sliding-technique/" target="_blank" class="btn">GFG: Sliding Window Deep Dive</a><a href="https://www.youtube.com/watch?v=KtpqeN0Goro" target="_blank" class="btn">YT: Aditya Verma Sliding Window Playlist</a>
+            </div>
+            
+            <h4>Practice Problems (Curated Top 15)</h4>
+            <div class="practice-list">
+                <a href="https://leetcode.com/problemset/all/?search=Maximum%20Average%20Subarray%20I" target="_blank">Maximum Average Subarray I</a><a href="https://leetcode.com/problemset/all/?search=Longest%20Substring%20Without%20Repeating%20Characters" target="_blank">Longest Substring Without Repeating Characters</a><a href="https://leetcode.com/problemset/all/?search=Minimum%20Size%20Subarray%20Sum" target="_blank">Minimum Size Subarray Sum</a><a href="https://leetcode.com/problemset/all/?search=Fruit%20Into%20Baskets" target="_blank">Fruit Into Baskets</a><a href="https://leetcode.com/problemset/all/?search=Longest%20Repeating%20Character%20Replacement" target="_blank">Longest Repeating Character Replacement</a><a href="https://leetcode.com/problemset/all/?search=Max%20Consecutive%20Ones%20III" target="_blank">Max Consecutive Ones III</a><a href="https://leetcode.com/problemset/all/?search=Permutation%20in%20String" target="_blank">Permutation in String</a><a href="https://leetcode.com/problemset/all/?search=Find%20All%20Anagrams%20in%20a%20String" target="_blank">Find All Anagrams in a String</a><a href="https://leetcode.com/problemset/all/?search=Sliding%20Window%20Maximum" target="_blank">Sliding Window Maximum</a><a href="https://leetcode.com/problemset/all/?search=Subarray%20Product%20Less%20Than%20K" target="_blank">Subarray Product Less Than K</a><a href="https://leetcode.com/problemset/all/?search=Minimum%20Window%20Substring" target="_blank">Minimum Window Substring</a><a href="https://leetcode.com/problemset/all/?search=Longest%20Subarray%20with%20Ones%20after%20Replacement" target="_blank">Longest Subarray with Ones after Replacement</a><a href="https://leetcode.com/problemset/all/?search=Count%20Occurrences%20of%20Anagrams" target="_blank">Count Occurrences of Anagrams</a><a href="https://leetcode.com/problemset/all/?search=First%20Negative%20Integer%20in%20Every%20Window" target="_blank">First Negative Integer in Every Window</a><a href="https://leetcode.com/problemset/all/?search=Grumpy%20Bookstore%20Owner" target="_blank">Grumpy Bookstore Owner</a>
+            </div>
+        </div>
+    </div>
+    
+    <div class="accordion">
+        <div class="accordion-header" onclick="toggleAccordion(this)">
+            <h3>2. Two Pointers</h3>
+            <span>▼</span>
+        </div>
+        <div class="accordion-content">
+            <h4>Deep Theory & Concept</h4>
+            <p>Similar to Sliding Window but pointers generally move towards each other from opposite ends, or move at different paces. Highly dependent on the data being sorted. Because they process elements linearly and converge, time complexity is O(N).</p>
+            
+            <h4>Common Variants</h4>
+            <pre style="background: rgba(0,0,0,0.2); border: none; padding: 1rem;"><code style="color: var(--text-muted);">1. Opposite Ends (Start at 0 and N-1, move inwards. E.g., Pair Sum, Palindrome).
+2. Same Direction (One pointer slow, one fast. E.g., removing duplicates in place).</code></pre>
+            
+            <p><strong>How to Identify:</strong> Sorted arrays. Problems asking for pairs, triplets, or elements satisfying an equation (like A+B=C). In-place array manipulation without extra space.</p>
+            <p><strong>Approach to Solve:</strong> For Opposite Ends:
+1. left = 0, right = n-1.
+2. Calculate current state (e.g., sum = arr[left]+arr[right]).
+3. If sum < target, we need a bigger number, so left++.
+4. If sum > target, we need a smaller number, so right--.</p>
+            
+            <h4>C++ Template</h4>
+            <pre><code>vector&lt;int&gt; twoSumSorted(vector&lt;int&gt;& arr, int target) {
+    int left = 0, right = arr.size() - 1;
+    while(left &lt; right) {
+        int sum = arr[left] + arr[right];
+        if(sum == target) return {left, right};
+        if(sum &lt; target) left++; // Need larger sum
+        else right--; // Need smaller sum
+    }
+    return {-1, -1};
+}</code></pre>
+            
+            <h4>Learning Resources</h4>
+            <div class="resource-links">
+                <a href="https://www.geeksforgeeks.org/two-pointers-technique/" target="_blank" class="btn">GFG: Two Pointers Theory</a><a href="https://www.youtube.com/watch?v=-EqZzKtcOwc" target="_blank" class="btn">YT: Two Pointers Explained</a>
+            </div>
+            
+            <h4>Practice Problems (Curated Top 15)</h4>
+            <div class="practice-list">
+                <a href="https://leetcode.com/problemset/all/?search=Two%20Sum%20II%20-%20Input%20Array%20Is%20Sorted" target="_blank">Two Sum II - Input Array Is Sorted</a><a href="https://leetcode.com/problemset/all/?search=Remove%20Duplicates%20from%20Sorted%20Array" target="_blank">Remove Duplicates from Sorted Array</a><a href="https://leetcode.com/problemset/all/?search=Squares%20of%20a%20Sorted%20Array" target="_blank">Squares of a Sorted Array</a><a href="https://leetcode.com/problemset/all/?search=3Sum" target="_blank">3Sum</a><a href="https://leetcode.com/problemset/all/?search=3Sum%20Closest" target="_blank">3Sum Closest</a><a href="https://leetcode.com/problemset/all/?search=3Sum%20Smaller" target="_blank">3Sum Smaller</a><a href="https://leetcode.com/problemset/all/?search=Sort%20Colors" target="_blank">Sort Colors</a><a href="https://leetcode.com/problemset/all/?search=Dutch%20National%20Flag%20Problem" target="_blank">Dutch National Flag Problem</a><a href="https://leetcode.com/problemset/all/?search=Quadruple%20Sum%20to%20Target" target="_blank">Quadruple Sum to Target</a><a href="https://leetcode.com/problemset/all/?search=Comparing%20Strings%20containing%20Backspaces" target="_blank">Comparing Strings containing Backspaces</a><a href="https://leetcode.com/problemset/all/?search=Container%20With%20Most%20Water" target="_blank">Container With Most Water</a><a href="https://leetcode.com/problemset/all/?search=Trapping%20Rain%20Water" target="_blank">Trapping Rain Water</a><a href="https://leetcode.com/problemset/all/?search=Valid%20Palindrome" target="_blank">Valid Palindrome</a><a href="https://leetcode.com/problemset/all/?search=Reverse%20String" target="_blank">Reverse String</a><a href="https://leetcode.com/problemset/all/?search=Move%20Zeroes" target="_blank">Move Zeroes</a>
+            </div>
+        </div>
+    </div>
+    
+    <div class="accordion">
+        <div class="accordion-header" onclick="toggleAccordion(this)">
+            <h3>3. Fast & Slow Pointers (Floyd's Cycle)</h3>
+            <span>▼</span>
+        </div>
+        <div class="accordion-content">
+            <h4>Deep Theory & Concept</h4>
+            <p>In a linked list (or implicit graph), if a cycle exists, a fast pointer (moving 2 steps) will eventually lap and meet the slow pointer (moving 1 step). Furthermore, the meeting point mathematically helps find the exact start of the cycle.</p>
+            
+            <h4>Common Variants</h4>
+            <pre style="background: rgba(0,0,0,0.2); border: none; padding: 1rem;"><code style="color: var(--text-muted);">1. Cycle Detection (Do they meet?).
+2. Middle element finding (When fast reaches end, slow is at exact middle).
+3. Finding cycle starting node.</code></pre>
+            
+            <p><strong>How to Identify:</strong> Linked Lists. 'Find middle', 'detect cycle/loop', 'find duplicate number' (where array values are indices).</p>
+            <p><strong>Approach to Solve:</strong> 1. Initialize slow = head, fast = head.
+2. Loop while fast and fast->next are not null.
+3. slow = slow->next, fast = fast->next->next.
+4. If slow == fast, cycle exists.</p>
+            
+            <h4>C++ Template</h4>
+            <pre><code>ListNode* detectCycleStart(ListNode *head) {
+    ListNode *slow = head, *fast = head;
+    bool hasCycle = false;
+    
+    while(fast != NULL && fast-&gt;next != NULL) {
+        slow = slow-&gt;next;
+        fast = fast-&gt;next-&gt;next;
+        if(slow == fast) {
+            hasCycle = true;
+            break;
+        }
+    }
+    if(!hasCycle) return NULL;
+    
+    // To find cycle start, move slow to head, keep fast at meeting point.
+    // Move both 1 step at a time. They will meet at cycle start.
+    slow = head;
+    while(slow != fast) {
+        slow = slow-&gt;next;
+        fast = fast-&gt;next;
+    }
+    return slow;
+}</code></pre>
+            
+            <h4>Learning Resources</h4>
+            <div class="resource-links">
+                <a href="https://www.geeksforgeeks.org/floyds-cycle-finding-algorithm/" target="_blank" class="btn">GFG: Floyd's Cycle Finding</a>
+            </div>
+            
+            <h4>Practice Problems (Curated Top 15)</h4>
+            <div class="practice-list">
+                <a href="https://leetcode.com/problemset/all/?search=Linked%20List%20Cycle" target="_blank">Linked List Cycle</a><a href="https://leetcode.com/problemset/all/?search=Linked%20List%20Cycle%20II" target="_blank">Linked List Cycle II</a><a href="https://leetcode.com/problemset/all/?search=Happy%20Number" target="_blank">Happy Number</a><a href="https://leetcode.com/problemset/all/?search=Middle%20of%20the%20Linked%20List" target="_blank">Middle of the Linked List</a><a href="https://leetcode.com/problemset/all/?search=Palindrome%20Linked%20List" target="_blank">Palindrome Linked List</a><a href="https://leetcode.com/problemset/all/?search=Reorder%20List" target="_blank">Reorder List</a><a href="https://leetcode.com/problemset/all/?search=Circular%20Array%20Loop" target="_blank">Circular Array Loop</a><a href="https://leetcode.com/problemset/all/?search=Find%20the%20Duplicate%20Number" target="_blank">Find the Duplicate Number</a><a href="https://leetcode.com/problemset/all/?search=Remove%20Nth%20Node%20From%20End%20of%20List" target="_blank">Remove Nth Node From End of List</a><a href="https://leetcode.com/problemset/all/?search=Intersection%20of%20Two%20Linked%20Lists" target="_blank">Intersection of Two Linked Lists</a><a href="https://leetcode.com/problemset/all/?search=Delete%20the%20Middle%20Node%20of%20a%20Linked%20List" target="_blank">Delete the Middle Node of a Linked List</a><a href="https://leetcode.com/problemset/all/?search=Sort%20List" target="_blank">Sort List</a><a href="https://leetcode.com/problemset/all/?search=Rotate%20List" target="_blank">Rotate List</a><a href="https://leetcode.com/problemset/all/?search=Reverse%20Nodes%20in%20k-Group" target="_blank">Reverse Nodes in k-Group</a><a href="https://leetcode.com/problemset/all/?search=Swapping%20Nodes%20in%20a%20Linked%20List" target="_blank">Swapping Nodes in a Linked List</a>
+            </div>
+        </div>
+    </div>
+    
+    <div class="accordion">
+        <div class="accordion-header" onclick="toggleAccordion(this)">
+            <h3>4. Merge Intervals</h3>
+            <span>▼</span>
+        </div>
+        <div class="accordion-content">
+            <h4>Deep Theory & Concept</h4>
+            <p>When dealing with intervals `[start, end]`, if you sort the array by `start` time, any overlapping intervals will be strictly adjacent in the sorted array. This allows you to process merges in a single linear pass `O(N)` after an `O(N log N)` sort.</p>
+            
+            <h4>Common Variants</h4>
+            <pre style="background: rgba(0,0,0,0.2); border: none; padding: 1rem;"><code style="color: var(--text-muted);">1. Merge overlapping.
+2. Insert new interval.
+3. Check if any overlap exists (Meeting Rooms).
+4. Find free time (Intersection).</code></pre>
+            
+            <p><strong>How to Identify:</strong> Arrays of ranges `[a, b]`. Keywords: 'overlapping', 'intervals', 'scheduling', 'meetings'.</p>
+            <p><strong>Approach to Solve:</strong> 1. Sort intervals by start time.
+2. Create a result list and add the first interval.
+3. Iterate: if current interval's start <= result's last interval's end, merge them (update end = max(end1, end2)).
+4. Else, no overlap, push current to result.</p>
+            
+            <h4>C++ Template</h4>
+            <pre><code>vector&lt;vector&lt;int&gt;&gt; merge(vector&lt;vector&lt;int&gt;&gt;& intervals) {
+    if(intervals.empty()) return {};
+    // 1. Sort by start time
+    sort(intervals.begin(), intervals.end());
+    
+    vector&lt;vector&lt;int&gt;&gt; res;
+    res.push_back(intervals[0]);
+    
+    for(int i = 1; i &lt; intervals.size(); i++) {
+        // Overlap condition
+        if(res.back()[1] &gt;= intervals[i][0]) {
+            res.back()[1] = max(res.back()[1], intervals[i][1]);
+        } else {
+            res.push_back(intervals[i]);
+        }
+    }
+    return res;
+}</code></pre>
+            
+            <h4>Learning Resources</h4>
+            <div class="resource-links">
+                <a href="https://www.geeksforgeeks.org/merging-intervals/" target="_blank" class="btn">GFG: Merge Intervals</a>
+            </div>
+            
+            <h4>Practice Problems (Curated Top 15)</h4>
+            <div class="practice-list">
+                <a href="https://leetcode.com/problemset/all/?search=Merge%20Intervals" target="_blank">Merge Intervals</a><a href="https://leetcode.com/problemset/all/?search=Insert%20Interval" target="_blank">Insert Interval</a><a href="https://leetcode.com/problemset/all/?search=Interval%20List%20Intersections" target="_blank">Interval List Intersections</a><a href="https://leetcode.com/problemset/all/?search=Non-overlapping%20Intervals" target="_blank">Non-overlapping Intervals</a><a href="https://leetcode.com/problemset/all/?search=Meeting%20Rooms" target="_blank">Meeting Rooms</a><a href="https://leetcode.com/problemset/all/?search=Meeting%20Rooms%20II" target="_blank">Meeting Rooms II</a><a href="https://leetcode.com/problemset/all/?search=Employee%20Free%20Time" target="_blank">Employee Free Time</a><a href="https://leetcode.com/problemset/all/?search=Minimum%20Meeting%20Rooms" target="_blank">Minimum Meeting Rooms</a><a href="https://leetcode.com/problemset/all/?search=Maximum%20CPU%20Load" target="_blank">Maximum CPU Load</a><a href="https://leetcode.com/problemset/all/?search=Teemo%20Attacking" target="_blank">Teemo Attacking</a><a href="https://leetcode.com/problemset/all/?search=Task%20Scheduler" target="_blank">Task Scheduler</a><a href="https://leetcode.com/problemset/all/?search=Video%20Stitching" target="_blank">Video Stitching</a><a href="https://leetcode.com/problemset/all/?search=My%20Calendar%20I" target="_blank">My Calendar I</a><a href="https://leetcode.com/problemset/all/?search=My%20Calendar%20II" target="_blank">My Calendar II</a><a href="https://leetcode.com/problemset/all/?search=Data%20Stream%20as%20Disjoint%20Intervals" target="_blank">Data Stream as Disjoint Intervals</a>
+            </div>
+        </div>
+    </div>
+    
+    <div class="accordion">
+        <div class="accordion-header" onclick="toggleAccordion(this)">
+            <h3>5. Cyclic Sort</h3>
+            <span>▼</span>
+        </div>
+        <div class="accordion-content">
+            <h4>Deep Theory & Concept</h4>
+            <p>If you have an array of size N, and elements are strictly in the range 1 to N, every element implicitly belongs at index `value - 1`. By iterating and swapping elements to their correct index, we sort the array in O(N) without O(N log N) comparison sorts.</p>
+            
+            <h4>Common Variants</h4>
+            <pre style="background: rgba(0,0,0,0.2); border: none; padding: 1rem;"><code style="color: var(--text-muted);">1. Find missing number.
+2. Find duplicate number.
+3. Find all duplicates/missing (requires second pass).</code></pre>
+            
+            <p><strong>How to Identify:</strong> Numbers are in a bounded range `1 to N` or `0 to N`. Asks for missing, duplicate, or smallest missing positive integer.</p>
+            <p><strong>Approach to Solve:</strong> 1. Iterate index i from 0 to N.
+2. If arr[i] > 0 and arr[i] <= N and arr[i] != arr[arr[i]-1], swap(arr[i], arr[arr[i]-1]).
+3. Else i++.
+4. Second pass: first index where arr[i] != i+1 gives the missing/duplicate.</p>
+            
+            <h4>C++ Template</h4>
+            <pre><code>void cyclicSortFindMissing(vector&lt;int&gt;& nums) {
+    int i = 0;
+    int n = nums.size();
+    // Pass 1: Place elements at correct index
+    while (i &lt; n) {
+        int correctIndex = nums[i] - 1;
+        if (nums[i] &gt; 0 && nums[i] &lt;= n && nums[i] != nums[correctIndex]) {
+            swap(nums[i], nums[correctIndex]);
+        } else {
+            i++;
+        }
+    }
+    // Pass 2: Find the mismatch
+    for(int i=0; i &lt; n; i++) {
+        if(nums[i] != i + 1) {
+            cout &lt;&lt; "Missing number is: " &lt;&lt; i + 1;
+            return;
+        }
+    }
+}</code></pre>
+            
+            <h4>Learning Resources</h4>
+            <div class="resource-links">
+                <a href="https://www.geeksforgeeks.org/cycle-sort/" target="_blank" class="btn">GFG: Cyclic Sort</a>
+            </div>
+            
+            <h4>Practice Problems (Curated Top 15)</h4>
+            <div class="practice-list">
+                <a href="https://leetcode.com/problemset/all/?search=Missing%20Number" target="_blank">Missing Number</a><a href="https://leetcode.com/problemset/all/?search=Find%20All%20Numbers%20Disappeared%20in%20an%20Array" target="_blank">Find All Numbers Disappeared in an Array</a><a href="https://leetcode.com/problemset/all/?search=Find%20the%20Duplicate%20Number" target="_blank">Find the Duplicate Number</a><a href="https://leetcode.com/problemset/all/?search=Find%20All%20Duplicates%20in%20an%20Array" target="_blank">Find All Duplicates in an Array</a><a href="https://leetcode.com/problemset/all/?search=Set%20Mismatch" target="_blank">Set Mismatch</a><a href="https://leetcode.com/problemset/all/?search=First%20Missing%20Positive" target="_blank">First Missing Positive</a><a href="https://leetcode.com/problemset/all/?search=Smallest%20Missing%20Positive%20Number" target="_blank">Smallest Missing Positive Number</a><a href="https://leetcode.com/problemset/all/?search=Find%20the%20First%20K%20Missing%20Positive%20Numbers" target="_blank">Find the First K Missing Positive Numbers</a><a href="https://leetcode.com/problemset/all/?search=Couples%20Holding%20Hands" target="_blank">Couples Holding Hands</a><a href="https://leetcode.com/problemset/all/?search=Kth%20Missing%20Positive%20Number" target="_blank">Kth Missing Positive Number</a><a href="https://leetcode.com/problemset/all/?search=Max%20Chunks%20To%20Make%20Sorted" target="_blank">Max Chunks To Make Sorted</a><a href="https://leetcode.com/problemset/all/?search=Sort%20Array%20By%20Parity" target="_blank">Sort Array By Parity</a><a href="https://leetcode.com/problemset/all/?search=Sort%20Array%20By%20Parity%20II" target="_blank">Sort Array By Parity II</a><a href="https://leetcode.com/problemset/all/?search=Squares%20of%20a%20Sorted%20Array" target="_blank">Squares of a Sorted Array</a><a href="https://leetcode.com/problemset/all/?search=Find%20the%20Corrupt%20Pair" target="_blank">Find the Corrupt Pair</a>
+            </div>
+        </div>
+    </div>
+    
+    <div class="accordion">
+        <div class="accordion-header" onclick="toggleAccordion(this)">
+            <h3>6. Top 'K' Elements (Heaps)</h3>
+            <span>▼</span>
+        </div>
+        <div class="accordion-content">
+            <h4>Deep Theory & Concept</h4>
+            <p>Sorting takes O(N log N). However, if we only need top K, we can use a Priority Queue (Heap). A Heap of size K takes O(log K) for insertions. Processing N elements takes O(N log K), which is much faster than N log N when K is small.</p>
+            
+            <h4>Common Variants</h4>
+            <pre style="background: rgba(0,0,0,0.2); border: none; padding: 1rem;"><code style="color: var(--text-muted);">1. Top K Largest (Use Min-Heap of size K).
+2. Top K Smallest (Use Max-Heap of size K).
+3. Kth element in a stream.</code></pre>
+            
+            <p><strong>How to Identify:</strong> Problem explicitly asks for 'top k', 'kth largest/smallest', 'most frequent'. Data might be streaming (unknown N).</p>
+            <p><strong>Approach to Solve:</strong> For Top K Largest:
+1. Create Min-Heap.
+2. Insert first K elements.
+3. For remaining elements, if element > heap.top(), pop top and push new element.
+4. Heap retains the K largest seen so far.</p>
+            
+            <h4>C++ Template</h4>
+            <pre><code>vector&lt;int&gt; topKFrequent(vector&lt;int&gt;& nums, int k) {
+    unordered_map&lt;int, int&gt; freq;
+    for(int n : nums) freq[n]++;
+    
+    // Min heap: stores pair(frequency, number). Sorts by frequency.
+    priority_queue&lt;pair&lt;int,int&gt;, vector&lt;pair&lt;int,int&gt;&gt;, greater&lt;pair&lt;int,int&gt;&gt;&gt; minHeap;
+    
+    for(auto& p : freq) {
+        minHeap.push({p.second, p.first});
+        if(minHeap.size() &gt; k) {
+            minHeap.pop(); // Remove lowest frequency
+        }
+    }
+    
+    vector&lt;int&gt; res;
+    while(!minHeap.empty()) {
+        res.push_back(minHeap.top().second);
+        minHeap.pop();
+    }
+    return res;
+}</code></pre>
+            
+            <h4>Learning Resources</h4>
+            <div class="resource-links">
+                <a href="https://www.geeksforgeeks.org/priority-queue-in-cpp-stl/" target="_blank" class="btn">GFG: Priority Queue</a>
+            </div>
+            
+            <h4>Practice Problems (Curated Top 15)</h4>
+            <div class="practice-list">
+                <a href="https://leetcode.com/problemset/all/?search=Top%20K%20Frequent%20Elements" target="_blank">Top K Frequent Elements</a><a href="https://leetcode.com/problemset/all/?search=Kth%20Largest%20Element%20in%20an%20Array" target="_blank">Kth Largest Element in an Array</a><a href="https://leetcode.com/problemset/all/?search=K%20Closest%20Points%20to%20Origin" target="_blank">K Closest Points to Origin</a><a href="https://leetcode.com/problemset/all/?search=Sort%20Characters%20By%20Frequency" target="_blank">Sort Characters By Frequency</a><a href="https://leetcode.com/problemset/all/?search=Top%20K%20Frequent%20Words" target="_blank">Top K Frequent Words</a><a href="https://leetcode.com/problemset/all/?search=Kth%20Largest%20Element%20in%20a%20Stream" target="_blank">Kth Largest Element in a Stream</a><a href="https://leetcode.com/problemset/all/?search=Find%20K%20Closest%20Elements" target="_blank">Find K Closest Elements</a><a href="https://leetcode.com/problemset/all/?search=Least%20Number%20of%20Unique%20Integers%20after%20K%20Removals" target="_blank">Least Number of Unique Integers after K Removals</a><a href="https://leetcode.com/problemset/all/?search=Reorganize%20String" target="_blank">Reorganize String</a><a href="https://leetcode.com/problemset/all/?search=Task%20Scheduler" target="_blank">Task Scheduler</a><a href="https://leetcode.com/problemset/all/?search=Minimum%20Cost%20to%20Hire%20K%20Workers" target="_blank">Minimum Cost to Hire K Workers</a><a href="https://leetcode.com/problemset/all/?search=K-th%20Smallest%20Prime%20Fraction" target="_blank">K-th Smallest Prime Fraction</a><a href="https://leetcode.com/problemset/all/?search=Connect%20Ropes%20to%20Minimize%20Cost" target="_blank">Connect Ropes to Minimize Cost</a><a href="https://leetcode.com/problemset/all/?search=Maximum%20Frequency%20Stack" target="_blank">Maximum Frequency Stack</a><a href="https://leetcode.com/problemset/all/?search=Course%20Schedule%20III" target="_blank">Course Schedule III</a>
+            </div>
+        </div>
+    </div>
+    
+    <div class="accordion">
+        <div class="accordion-header" onclick="toggleAccordion(this)">
+            <h3>7. Modified Binary Search</h3>
+            <span>▼</span>
+        </div>
+        <div class="accordion-content">
+            <h4>Deep Theory & Concept</h4>
+            <p>Standard binary search requires strict sorting. In a rotated sorted array (e.g., 4,5,6,1,2,3), at least one half of the array divided by `mid` will ALWAYS be strictly sorted. We use this sorted half to decide if our target lies within it.</p>
+            
+            <h4>Common Variants</h4>
+            <pre style="background: rgba(0,0,0,0.2); border: none; padding: 1rem;"><code style="color: var(--text-muted);">1. Order agnostic (don't know if ascending/descending).
+2. Rotated arrays.
+3. Finding floor/ceiling (lower_bound, upper_bound).
+4. Binary Search on Answer (Optimization problems).</code></pre>
+            
+            <p><strong>How to Identify:</strong> O(log N) time required. Array is sorted or rotated. 'Find minimum in rotated array'. Optimization: 'Find the minimum capacity required to ship packages in D days'.</p>
+            <p><strong>Approach to Solve:</strong> Rotated Array:
+1. calc mid.
+2. check if left to mid is sorted (`arr[left] <= arr[mid]`).
+3. If it is, check if target is in range [left, mid]. If yes, right = mid-1. Else left = mid+1.
+4. If right half is sorted, do inverse.</p>
+            
+            <h4>C++ Template</h4>
+            <pre><code>int searchRotated(vector&lt;int&gt;& nums, int target) {
+    int left = 0, right = nums.size() - 1;
+    while(left &lt;= right) {
+        int mid = left + (right - left) / 2;
+        if(nums[mid] == target) return mid;
+        
+        // Is Left Half Sorted?
+        if(nums[left] &lt;= nums[mid]) { 
+            // Is target inside left half?
+            if(target &gt;= nums[left] && target &lt; nums[mid]) right = mid - 1;
+            else left = mid + 1; // Go right
+        } 
+        // Right Half must be sorted
+        else { 
+            // Is target inside right half?
+            if(target &gt; nums[mid] && target &lt;= nums[right]) left = mid + 1;
+            else right = mid - 1; // Go left
+        }
+    }
+    return -1;
+}</code></pre>
+            
+            <h4>Learning Resources</h4>
+            <div class="resource-links">
+                <a href="https://www.geeksforgeeks.org/search-an-element-in-a-sorted-and-pivoted-array/" target="_blank" class="btn">GFG: Search in Rotated Array</a>
+            </div>
+            
+            <h4>Practice Problems (Curated Top 15)</h4>
+            <div class="practice-list">
+                <a href="https://leetcode.com/problemset/all/?search=Search%20in%20Rotated%20Sorted%20Array" target="_blank">Search in Rotated Sorted Array</a><a href="https://leetcode.com/problemset/all/?search=Find%20Minimum%20in%20Rotated%20Sorted%20Array" target="_blank">Find Minimum in Rotated Sorted Array</a><a href="https://leetcode.com/problemset/all/?search=Find%20First%20and%20Last%20Position%20of%20Element%20in%20Sorted%20Array" target="_blank">Find First and Last Position of Element in Sorted Array</a><a href="https://leetcode.com/problemset/all/?search=Peak%20Index%20in%20a%20Mountain%20Array" target="_blank">Peak Index in a Mountain Array</a><a href="https://leetcode.com/problemset/all/?search=Find%20Peak%20Element" target="_blank">Find Peak Element</a><a href="https://leetcode.com/problemset/all/?search=Search%20a%202D%20Matrix" target="_blank">Search a 2D Matrix</a><a href="https://leetcode.com/problemset/all/?search=Search%20a%202D%20Matrix%20II" target="_blank">Search a 2D Matrix II</a><a href="https://leetcode.com/problemset/all/?search=Split%20Array%20Largest%20Sum" target="_blank">Split Array Largest Sum</a><a href="https://leetcode.com/problemset/all/?search=Capacity%20To%20Ship%20Packages%20Within%20D%20Days" target="_blank">Capacity To Ship Packages Within D Days</a><a href="https://leetcode.com/problemset/all/?search=Koko%20Eating%20Bananas" target="_blank">Koko Eating Bananas</a><a href="https://leetcode.com/problemset/all/?search=Minimum%20Number%20of%20Days%20to%20Make%20m%20Bouquets" target="_blank">Minimum Number of Days to Make m Bouquets</a><a href="https://leetcode.com/problemset/all/?search=Order-agnostic%20Binary%20Search" target="_blank">Order-agnostic Binary Search</a><a href="https://leetcode.com/problemset/all/?search=Ceiling%20of%20a%20Number" target="_blank">Ceiling of a Number</a><a href="https://leetcode.com/problemset/all/?search=Next%20Letter" target="_blank">Next Letter</a><a href="https://leetcode.com/problemset/all/?search=Search%20in%20a%20Sorted%20Infinite%20Array" target="_blank">Search in a Sorted Infinite Array</a>
+            </div>
+        </div>
+    </div>
+    
+    <div class="accordion">
+        <div class="accordion-header" onclick="toggleAccordion(this)">
+            <h3>8. Tree Depth First Search (DFS)</h3>
+            <span>▼</span>
+        </div>
+        <div class="accordion-content">
+            <h4>Deep Theory & Concept</h4>
+            <p>DFS uses a Stack (implicitly via function call stack in recursion). It goes deep into leaves. There are 3 ways to process a node relative to its children: Pre-order (Node, L, R), In-order (L, Node, R - gives sorted order for BST), Post-order (L, R, Node - useful when deleting or aggregating child data).</p>
+            
+            <h4>Common Variants</h4>
+            <pre style="background: rgba(0,0,0,0.2); border: none; padding: 1rem;"><code style="color: var(--text-muted);">1. Path finding (root to leaf).
+2. Subtree property aggregation (e.g. max depth, diameter).
+3. Binary Search Tree validation.</code></pre>
+            
+            <p><strong>How to Identify:</strong> Tree problems asking for paths, finding a specific node deeply, checking properties from root to leaf, finding lowest common ancestor.</p>
+            <p><strong>Approach to Solve:</strong> Recursive implementation:
+1. Base case (root == null).
+2. Do some logic (Pre-order).
+3. Recursively call DFS(left).
+4. Do some logic (In-order).
+5. Recursively call DFS(right).
+6. Return aggregated result to parent.</p>
+            
+            <h4>C++ Template</h4>
+            <pre><code>int maxDepth(TreeNode* root) {
+    if (root == NULL) return 0; // Base case
+    
+    int leftDepth = maxDepth(root-&gt;left);
+    int rightDepth = maxDepth(root-&gt;right);
+    
+    // Process after children are processed (Post-order)
+    return max(leftDepth, rightDepth) + 1;
+}
+
+// Check Path Sum
+bool hasPathSum(TreeNode* root, int targetSum) {
+    if (!root) return false;
+    if (!root-&gt;left && !root-&gt;right) return targetSum == root-&gt;val;
+    return hasPathSum(root-&gt;left, targetSum - root-&gt;val) || 
+           hasPathSum(root-&gt;right, targetSum - root-&gt;val);
+}</code></pre>
+            
+            <h4>Learning Resources</h4>
+            <div class="resource-links">
+                <a href="https://www.youtube.com/watch?v=OnSn2XEQ4MY" target="_blank" class="btn">YT: Neetcode Trees</a>
+            </div>
+            
+            <h4>Practice Problems (Curated Top 15)</h4>
+            <div class="practice-list">
+                <a href="https://leetcode.com/problemset/all/?search=Maximum%20Depth%20of%20Binary%20Tree" target="_blank">Maximum Depth of Binary Tree</a><a href="https://leetcode.com/problemset/all/?search=Path%20Sum" target="_blank">Path Sum</a><a href="https://leetcode.com/problemset/all/?search=All%20Paths%20for%20a%20Sum" target="_blank">All Paths for a Sum</a><a href="https://leetcode.com/problemset/all/?search=Diameter%20of%20Binary%20Tree" target="_blank">Diameter of Binary Tree</a><a href="https://leetcode.com/problemset/all/?search=Lowest%20Common%20Ancestor%20of%20a%20Binary%20Tree" target="_blank">Lowest Common Ancestor of a Binary Tree</a><a href="https://leetcode.com/problemset/all/?search=Invert%20Binary%20Tree" target="_blank">Invert Binary Tree</a><a href="https://leetcode.com/problemset/all/?search=Same%20Tree" target="_blank">Same Tree</a><a href="https://leetcode.com/problemset/all/?search=Symmetric%20Tree" target="_blank">Symmetric Tree</a><a href="https://leetcode.com/problemset/all/?search=Validate%20Binary%20Search%20Tree" target="_blank">Validate Binary Search Tree</a><a href="https://leetcode.com/problemset/all/?search=Kth%20Smallest%20Element%20in%20a%20BST" target="_blank">Kth Smallest Element in a BST</a><a href="https://leetcode.com/problemset/all/?search=Flatten%20Binary%20Tree%20to%20Linked%20List" target="_blank">Flatten Binary Tree to Linked List</a><a href="https://leetcode.com/problemset/all/?search=Binary%20Tree%20Maximum%20Path%20Sum" target="_blank">Binary Tree Maximum Path Sum</a><a href="https://leetcode.com/problemset/all/?search=Sum%20Root%20to%20Leaf%20Numbers" target="_blank">Sum Root to Leaf Numbers</a><a href="https://leetcode.com/problemset/all/?search=Path%20Sum%20II" target="_blank">Path Sum II</a><a href="https://leetcode.com/problemset/all/?search=Path%20Sum%20III" target="_blank">Path Sum III</a>
+            </div>
+        </div>
+    </div>
+    
+    <div class="accordion">
+        <div class="accordion-header" onclick="toggleAccordion(this)">
+            <h3>9. Tree Breadth First Search (BFS)</h3>
+            <span>▼</span>
+        </div>
+        <div class="accordion-content">
+            <h4>Deep Theory & Concept</h4>
+            <p>BFS uses a Queue. It processes all nodes at depth D before moving to depth D+1. Essential for finding the 'shortest path' in unweighted graphs or dealing with level-specific tree logic.</p>
+            
+            <h4>Common Variants</h4>
+            <pre style="background: rgba(0,0,0,0.2); border: none; padding: 1rem;"><code style="color: var(--text-muted);">1. Level Order Traversal.
+2. Zigzag traversal.
+3. Shortest Path in Matrix (using BFS on grids).</code></pre>
+            
+            <p><strong>How to Identify:</strong> Keywords: 'level order', 'shortest path', 'closest', 'minimum steps', 'distance from root'.</p>
+            <p><strong>Approach to Solve:</strong> 1. Push root to Queue.
+2. While Queue not empty: get queue size `s` (number of nodes in current level).
+3. Loop `s` times: pop node, process it, push its left and right children if they exist.
+4. Move to next level.</p>
+            
+            <h4>C++ Template</h4>
+            <pre><code>vector&lt;vector&lt;int&gt;&gt; levelOrder(TreeNode* root) {
+    if (!root) return {};
+    vector&lt;vector&lt;int&gt;&gt; res;
+    queue&lt;TreeNode*&gt; q;
+    q.push(root);
+    
+    while (!q.empty()) {
+        int levelSize = q.size();
+        vector&lt;int&gt; currentLevel;
+        
+        for (int i = 0; i &lt; levelSize; ++i) {
+            TreeNode* curr = q.front(); q.pop();
+            currentLevel.push_back(curr-&gt;val);
+            
+            if (curr-&gt;left) q.push(curr-&gt;left);
+            if (curr-&gt;right) q.push(curr-&gt;right);
+        }
+        res.push_back(currentLevel);
+    }
+    return res;
+}</code></pre>
+            
+            <h4>Learning Resources</h4>
+            <div class="resource-links">
+                <a href="https://www.geeksforgeeks.org/level-order-tree-traversal/" target="_blank" class="btn">GFG: Level Order Traversal</a>
+            </div>
+            
+            <h4>Practice Problems (Curated Top 15)</h4>
+            <div class="practice-list">
+                <a href="https://leetcode.com/problemset/all/?search=Binary%20Tree%20Level%20Order%20Traversal" target="_blank">Binary Tree Level Order Traversal</a><a href="https://leetcode.com/problemset/all/?search=Binary%20Tree%20Level%20Order%20Traversal%20II" target="_blank">Binary Tree Level Order Traversal II</a><a href="https://leetcode.com/problemset/all/?search=Binary%20Tree%20Zigzag%20Level%20Order%20Traversal" target="_blank">Binary Tree Zigzag Level Order Traversal</a><a href="https://leetcode.com/problemset/all/?search=Average%20of%20Levels%20in%20Binary%20Tree" target="_blank">Average of Levels in Binary Tree</a><a href="https://leetcode.com/problemset/all/?search=Minimum%20Depth%20of%20Binary%20Tree" target="_blank">Minimum Depth of Binary Tree</a><a href="https://leetcode.com/problemset/all/?search=Binary%20Tree%20Right%20Side%20View" target="_blank">Binary Tree Right Side View</a><a href="https://leetcode.com/problemset/all/?search=Populating%20Next%20Right%20Pointers%20in%20Each%20Node" target="_blank">Populating Next Right Pointers in Each Node</a><a href="https://leetcode.com/problemset/all/?search=Word%20Ladder" target="_blank">Word Ladder</a><a href="https://leetcode.com/problemset/all/?search=Shortest%20Path%20in%20Binary%20Matrix" target="_blank">Shortest Path in Binary Matrix</a><a href="https://leetcode.com/problemset/all/?search=Rotting%20Oranges" target="_blank">Rotting Oranges</a><a href="https://leetcode.com/problemset/all/?search=01%20Matrix" target="_blank">01 Matrix</a><a href="https://leetcode.com/problemset/all/?search=Snakes%20and%20Ladders" target="_blank">Snakes and Ladders</a><a href="https://leetcode.com/problemset/all/?search=Cheapest%20Flights%20Within%20K%20Stops" target="_blank">Cheapest Flights Within K Stops</a><a href="https://leetcode.com/problemset/all/?search=Network%20Delay%20Time" target="_blank">Network Delay Time</a><a href="https://leetcode.com/problemset/all/?search=Course%20Schedule" target="_blank">Course Schedule</a>
+            </div>
+        </div>
+    </div>
+    
+    <div class="accordion">
+        <div class="accordion-header" onclick="toggleAccordion(this)">
+            <h3>10. Backtracking (Subsets & Combinations)</h3>
+            <span>▼</span>
+        </div>
+        <div class="accordion-content">
+            <h4>Deep Theory & Concept</h4>
+            <p>It's an optimized brute force. Time complexity is usually exponential O(2^N) or factorial O(N!). We build a solution incrementally, and if we hit constraints, we undo the last step and try the next branch.</p>
+            
+            <h4>Common Variants</h4>
+            <pre style="background: rgba(0,0,0,0.2); border: none; padding: 1rem;"><code style="color: var(--text-muted);">1. Subsets (include/exclude element).
+2. Permutations (ordering matters, N!).
+3. Combinations (target sums).
+4. Constraint satisfaction (Sudoku, N-Queens).</code></pre>
+            
+            <p><strong>How to Identify:</strong> Asking for 'ALL possible', 'combinations', 'permutations', 'subsets'. Input size N is very small (N <= 20).</p>
+            <p><strong>Approach to Solve:</strong> Recursive template:
+`void backtrack(state, choices) {`
+`  if(isGoal(state)) add to result; return;`
+`  for(choice in choices) {`
+`    if(isValid(choice)) {`
+`      makeChoice();`
+`      backtrack(newState, remainingChoices);`
+`      undoChoice(); // BACKTRACK`
+`    }`
+`  }`
+`}`</p>
+            
+            <h4>C++ Template</h4>
+            <pre><code>void solveSubsets(vector&lt;int&gt;& nums, int start, vector&lt;int&gt;& curr, vector&lt;vector&lt;int&gt;&gt;& res) {
+    // Add current subset to result
+    res.push_back(curr);
+    
+    for (int i = start; i &lt; nums.size(); i++) {
+        // Choice: Include element
+        curr.push_back(nums[i]);
+        
+        // Explore deeper
+        solveSubsets(nums, i + 1, curr, res);
+        
+        // Backtrack: Undo choice to explore excluding element
+        curr.pop_back();
+    }
+}
+vector&lt;vector&lt;int&gt;&gt; subsets(vector&lt;int&gt;& nums) {
+    vector&lt;vector&lt;int&gt;&gt; res;
+    vector&lt;int&gt; curr;
+    solveSubsets(nums, 0, curr, res);
+    return res;
+}</code></pre>
+            
+            <h4>Learning Resources</h4>
+            <div class="resource-links">
+                <a href="https://www.youtube.com/watch?v=pfiQ_PS1g8E" target="_blank" class="btn">YT: Backtracking Core Template</a>
+            </div>
+            
+            <h4>Practice Problems (Curated Top 15)</h4>
+            <div class="practice-list">
+                <a href="https://leetcode.com/problemset/all/?search=Subsets" target="_blank">Subsets</a><a href="https://leetcode.com/problemset/all/?search=Subsets%20II" target="_blank">Subsets II</a><a href="https://leetcode.com/problemset/all/?search=Permutations" target="_blank">Permutations</a><a href="https://leetcode.com/problemset/all/?search=Permutations%20II" target="_blank">Permutations II</a><a href="https://leetcode.com/problemset/all/?search=Combinations" target="_blank">Combinations</a><a href="https://leetcode.com/problemset/all/?search=Combination%20Sum" target="_blank">Combination Sum</a><a href="https://leetcode.com/problemset/all/?search=Combination%20Sum%20II" target="_blank">Combination Sum II</a><a href="https://leetcode.com/problemset/all/?search=Combination%20Sum%20III" target="_blank">Combination Sum III</a><a href="https://leetcode.com/problemset/all/?search=Letter%20Combinations%20of%20a%20Phone%20Number" target="_blank">Letter Combinations of a Phone Number</a><a href="https://leetcode.com/problemset/all/?search=Generate%20Parentheses" target="_blank">Generate Parentheses</a><a href="https://leetcode.com/problemset/all/?search=Palindrome%20Partitioning" target="_blank">Palindrome Partitioning</a><a href="https://leetcode.com/problemset/all/?search=Word%20Search" target="_blank">Word Search</a><a href="https://leetcode.com/problemset/all/?search=N-Queens" target="_blank">N-Queens</a><a href="https://leetcode.com/problemset/all/?search=Sudoku%20Solver" target="_blank">Sudoku Solver</a><a href="https://leetcode.com/problemset/all/?search=Restore%20IP%20Addresses" target="_blank">Restore IP Addresses</a>
+            </div>
+        </div>
+    </div>
+    
+    <div class="accordion">
+        <div class="accordion-header" onclick="toggleAccordion(this)">
+            <h3>11. Dynamic Programming (0/1 Knapsack)</h3>
+            <span>▼</span>
+        </div>
+        <div class="accordion-content">
+            <h4>Deep Theory & Concept</h4>
+            <p>Knapsack is a classic 2D DP pattern. You have limited capacity and items with weights/values. For each item, you have a binary choice: take it or leave it. We memoize the state `[index][current_capacity]` to drop complexity from `O(2^N)` to `O(N * W)`.</p>
+            
+            <h4>Common Variants</h4>
+            <pre style="background: rgba(0,0,0,0.2); border: none; padding: 1rem;"><code style="color: var(--text-muted);">1. 0/1 Knapsack (item used once).
+2. Unbounded Knapsack (item used unlimited times, e.g. Coin Change).
+3. Subset Sum (bool target sum).</code></pre>
+            
+            <p><strong>How to Identify:</strong> Optimization (max/min) or counting ways. 'Given constraints/capacity'. 'Select elements to maximize value'.</p>
+            <p><strong>Approach to Solve:</strong> 1. Define State: dp[i][w] = max value using first i items and capacity w.
+2. Base case: capacity 0 = 0 value.
+3. Transitions:
+  Exclude: dp[i-1][w]
+  Include: val[i-1] + dp[i-1][w - weight[i-1]]
+  Take max of Include/Exclude.</p>
+            
+            <h4>C++ Template</h4>
+            <pre><code>int knapsack(vector&lt;int&gt;& wt, vector&lt;int&gt;& val, int W, int n) {
+    // dp[items][capacity]
+    vector&lt;vector&lt;int&gt;&gt; dp(n + 1, vector&lt;int&gt;(W + 1, 0));
+    
+    for(int i = 1; i &lt;= n; i++) {
+        for(int w = 1; w &lt;= W; w++) {
+            if(wt[i-1] &lt;= w) {
+                // Max of taking the item vs not taking it
+                dp[i][w] = max(dp[i-1][w], val[i-1] + dp[i-1][w - wt[i-1]]);
+            } else {
+                // Item too heavy, must skip
+                dp[i][w] = dp[i-1][w];
+            }
+        }
+    }
+    return dp[n][W];
+}</code></pre>
+            
+            <h4>Learning Resources</h4>
+            <div class="resource-links">
+                <a href="https://www.youtube.com/watch?v=nqOWjzSyq6w" target="_blank" class="btn">YT: Aditya Verma DP Knapsack</a>
+            </div>
+            
+            <h4>Practice Problems (Curated Top 15)</h4>
+            <div class="practice-list">
+                <a href="https://leetcode.com/problemset/all/?search=Partition%20Equal%20Subset%20Sum" target="_blank">Partition Equal Subset Sum</a><a href="https://leetcode.com/problemset/all/?search=Target%20Sum" target="_blank">Target Sum</a><a href="https://leetcode.com/problemset/all/?search=Ones%20and%20Zeroes" target="_blank">Ones and Zeroes</a><a href="https://leetcode.com/problemset/all/?search=Last%20Stone%20Weight%20II" target="_blank">Last Stone Weight II</a><a href="https://leetcode.com/problemset/all/?search=Coin%20Change" target="_blank">Coin Change</a><a href="https://leetcode.com/problemset/all/?search=Coin%20Change%20II" target="_blank">Coin Change II</a><a href="https://leetcode.com/problemset/all/?search=Combination%20Sum%20IV" target="_blank">Combination Sum IV</a><a href="https://leetcode.com/problemset/all/?search=Perfect%20Squares" target="_blank">Perfect Squares</a><a href="https://leetcode.com/problemset/all/?search=Minimum%20Cost%20For%20Tickets" target="_blank">Minimum Cost For Tickets</a><a href="https://leetcode.com/problemset/all/?search=Decode%20Ways" target="_blank">Decode Ways</a><a href="https://leetcode.com/problemset/all/?search=Word%20Break" target="_blank">Word Break</a><a href="https://leetcode.com/problemset/all/?search=Longest%20Increasing%20Subsequence" target="_blank">Longest Increasing Subsequence</a><a href="https://leetcode.com/problemset/all/?search=Edit%20Distance" target="_blank">Edit Distance</a><a href="https://leetcode.com/problemset/all/?search=Regular%20Expression%20Matching" target="_blank">Regular Expression Matching</a><a href="https://leetcode.com/problemset/all/?search=Wildcard%20Matching" target="_blank">Wildcard Matching</a>
+            </div>
+        </div>
+    </div>
+    
+    <div class="accordion">
+        <div class="accordion-header" onclick="toggleAccordion(this)">
+            <h3>12. Monotonic Stack</h3>
+            <span>▼</span>
+        </div>
+        <div class="accordion-content">
+            <h4>Deep Theory & Concept</h4>
+            <p>If we want to find the 'Next Greater Element' for every element in an array, nested loops take O(N^2). A monotonic stack processes elements and keeps a history of unresolved elements (elements waiting for their 'next greater'). When a larger element arrives, it resolves the stack items. Time: O(N) since every element is pushed/popped exactly once.</p>
+            
+            <h4>Common Variants</h4>
+            <pre style="background: rgba(0,0,0,0.2); border: none; padding: 1rem;"><code style="color: var(--text-muted);">1. Next/Previous Greater/Smaller.
+2. Stock Span.
+3. Histogram Rectangles.</code></pre>
+            
+            <p><strong>How to Identify:</strong> Problems asking for the 'next greater', 'next smaller' or involving finding spans/rectangles in arrays.</p>
+            <p><strong>Approach to Solve:</strong> 1. Initialize empty stack (store indices, not values).
+2. Iterate through array.
+3. While stack not empty AND current element > arr[stack.top()]:
+   Current element is the 'Next Greater' for the element at stack.top(). Pop it.
+4. Push current index to stack.</p>
+            
+            <h4>C++ Template</h4>
+            <pre><code>vector&lt;int&gt; nextGreaterElement(vector&lt;int&gt;& nums) {
+    vector&lt;int&gt; res(nums.size(), -1); // Default to -1
+    stack&lt;int&gt; st; // Stores INDICES
+    
+    for(int i = 0; i &lt; nums.size(); i++) {
+        // While current is greater than the element at stack top's index
+        while(!st.empty() && nums[i] &gt; nums[st.top()]) {
+            res[st.top()] = nums[i]; // Resolve
+            st.pop();
+        }
+        st.push(i); // Push unresolved index
+    }
+    return res;
+}</code></pre>
+            
+            <h4>Learning Resources</h4>
+            <div class="resource-links">
+                <a href="https://www.geeksforgeeks.org/next-greater-element/" target="_blank" class="btn">GFG: Next Greater Element</a>
+            </div>
+            
+            <h4>Practice Problems (Curated Top 15)</h4>
+            <div class="practice-list">
+                <a href="https://leetcode.com/problemset/all/?search=Next%20Greater%20Element%20I" target="_blank">Next Greater Element I</a><a href="https://leetcode.com/problemset/all/?search=Next%20Greater%20Element%20II" target="_blank">Next Greater Element II</a><a href="https://leetcode.com/problemset/all/?search=Daily%20Temperatures" target="_blank">Daily Temperatures</a><a href="https://leetcode.com/problemset/all/?search=Largest%20Rectangle%20in%20Histogram" target="_blank">Largest Rectangle in Histogram</a><a href="https://leetcode.com/problemset/all/?search=Maximal%20Rectangle" target="_blank">Maximal Rectangle</a><a href="https://leetcode.com/problemset/all/?search=Trapping%20Rain%20Water" target="_blank">Trapping Rain Water</a><a href="https://leetcode.com/problemset/all/?search=Remove%20K%20Digits" target="_blank">Remove K Digits</a><a href="https://leetcode.com/problemset/all/?search=Online%20Stock%20Span" target="_blank">Online Stock Span</a><a href="https://leetcode.com/problemset/all/?search=Sum%20of%20Subarray%20Minimums" target="_blank">Sum of Subarray Minimums</a><a href="https://leetcode.com/problemset/all/?search=132%20Pattern" target="_blank">132 Pattern</a><a href="https://leetcode.com/problemset/all/?search=Shortest%20Unsorted%20Continuous%20Subarray" target="_blank">Shortest Unsorted Continuous Subarray</a><a href="https://leetcode.com/problemset/all/?search=Final%20Prices%20With%20a%20Special%20Discount%20in%20a%20Shop" target="_blank">Final Prices With a Special Discount in a Shop</a><a href="https://leetcode.com/problemset/all/?search=Make%20The%20String%20Great" target="_blank">Make The String Great</a><a href="https://leetcode.com/problemset/all/?search=Minimum%20Add%20to%20Make%20Parentheses%20Valid" target="_blank">Minimum Add to Make Parentheses Valid</a><a href="https://leetcode.com/problemset/all/?search=Score%20of%20Parentheses" target="_blank">Score of Parentheses</a>
+            </div>
+        </div>
+    </div>
+    
+    <div class="accordion">
+        <div class="accordion-header" onclick="toggleAccordion(this)">
+            <h3>13. Topological Sort (Graph)</h3>
+            <span>▼</span>
+        </div>
+        <div class="accordion-content">
+            <h4>Deep Theory & Concept</h4>
+            <p>Essential for dependency resolution. If Course B requires Course A, A must come before B. We use Kahn's Algorithm (BFS based). We track 'in-degrees' (number of incoming edges). Nodes with 0 in-degrees have no prerequisites and can be processed immediately.</p>
+            
+            <h4>Common Variants</h4>
+            <pre style="background: rgba(0,0,0,0.2); border: none; padding: 1rem;"><code style="color: var(--text-muted);">1. Can finish all courses? (Cycle detection in Directed Graph).
+2. Return valid ordering.
+3. Alien Dictionary (finding alphabet order).</code></pre>
+            
+            <p><strong>How to Identify:</strong> Dependencies, scheduling tasks, 'prerequisites', 'can finish'. Graph is Directed.</p>
+            <p><strong>Approach to Solve:</strong> 1. Build adjacency list and compute in-degree array.
+2. Push all nodes with in-degree 0 to a Queue.
+3. Pop node, add to topo sort list.
+4. For each neighbor, reduce its in-degree by 1. If it becomes 0, push to Queue.
+5. If sorted list size != total nodes, there's a cycle.</p>
+            
+            <h4>C++ Template</h4>
+            <pre><code>vector&lt;int&gt; topoSort(int V, vector&lt;int&gt; adj[]) {
+    vector&lt;int&gt; inDegree(V, 0);
+    // 1. Calculate in-degrees
+    for(int i=0; i&lt;V; i++) {
+        for(int neighbor : adj[i]) inDegree[neighbor]++;
+    }
+    
+    queue&lt;int&gt; q;
+    // 2. Push independent nodes
+    for(int i=0; i&lt;V; i++) {
+        if(inDegree[i] == 0) q.push(i);
+    }
+    
+    vector&lt;int&gt; topo;
+    while(!q.empty()) {
+        int node = q.front(); q.pop();
+        topo.push_back(node);
+        
+        // 3. Resolve dependencies
+        for(int neighbor : adj[node]) {
+            inDegree[neighbor]--;
+            if(inDegree[neighbor] == 0) q.push(neighbor);
+        }
+    }
+    // Check for cycle: if topo.size() != V, DAG has a cycle.
+    return topo;
+}</code></pre>
+            
+            <h4>Learning Resources</h4>
+            <div class="resource-links">
+                <a href="https://www.geeksforgeeks.org/topological-sorting/" target="_blank" class="btn">GFG: Topological Sorting</a>
+            </div>
+            
+            <h4>Practice Problems (Curated Top 15)</h4>
+            <div class="practice-list">
+                <a href="https://leetcode.com/problemset/all/?search=Course%20Schedule" target="_blank">Course Schedule</a><a href="https://leetcode.com/problemset/all/?search=Course%20Schedule%20II" target="_blank">Course Schedule II</a><a href="https://leetcode.com/problemset/all/?search=Alien%20Dictionary" target="_blank">Alien Dictionary</a><a href="https://leetcode.com/problemset/all/?search=Sequence%20Reconstruction" target="_blank">Sequence Reconstruction</a><a href="https://leetcode.com/problemset/all/?search=Minimum%20Height%20Trees" target="_blank">Minimum Height Trees</a><a href="https://leetcode.com/problemset/all/?search=Find%20Eventual%20Safe%20States" target="_blank">Find Eventual Safe States</a><a href="https://leetcode.com/problemset/all/?search=Loud%20and%20Rich" target="_blank">Loud and Rich</a><a href="https://leetcode.com/problemset/all/?search=Parallel%20Courses" target="_blank">Parallel Courses</a><a href="https://leetcode.com/problemset/all/?search=Sort%20Items%20by%20Groups%20Respecting%20Dependencies" target="_blank">Sort Items by Groups Respecting Dependencies</a><a href="https://leetcode.com/problemset/all/?search=Longest%20Increasing%20Path%20in%20a%20Matrix" target="_blank">Longest Increasing Path in a Matrix</a><a href="https://leetcode.com/problemset/all/?search=Build%20a%20Matrix%20With%20Conditions" target="_blank">Build a Matrix With Conditions</a><a href="https://leetcode.com/problemset/all/?search=All%20Paths%20from%20Source%20Lead%20to%20Destination" target="_blank">All Paths from Source Lead to Destination</a><a href="https://leetcode.com/problemset/all/?search=Game%20of%20Life" target="_blank">Game of Life</a><a href="https://leetcode.com/problemset/all/?search=Number%20of%20Islands" target="_blank">Number of Islands</a><a href="https://leetcode.com/problemset/all/?search=Clone%20Graph" target="_blank">Clone Graph</a>
+            </div>
+        </div>
+    </div>
+    
+    <div class="accordion">
+        <div class="accordion-header" onclick="toggleAccordion(this)">
+            <h3>14. Disjoint Set / Union Find</h3>
+            <span>▼</span>
+        </div>
+        <div class="accordion-content">
+            <h4>Deep Theory & Concept</h4>
+            <p>Provides near O(1) time complexity for two operations: `find(A)` (which set does A belong to?) and `union(A, B)` (merge sets containing A and B). It uses an array `parent` where `parent[i]` points to the parent of `i`. Two optimizations make it lightning fast: Path Compression and Union by Rank.</p>
+            
+            <h4>Common Variants</h4>
+            <pre style="background: rgba(0,0,0,0.2); border: none; padding: 1rem;"><code style="color: var(--text-muted);">1. Cycle detection in Undirected Graph.
+2. Number of connected components.
+3. Minimum Spanning Tree (Kruskal's).</code></pre>
+            
+            <p><strong>How to Identify:</strong> Graph problems asking to connect components, check if nodes are in same group, dynamic connectivity.</p>
+            <p><strong>Approach to Solve:</strong> 1. Initialize parent[i] = i.
+2. `find(i)`: recursively find root. Path Compression: `parent[i] = find(parent[i])`.
+3. `union(i, j)`: Find roots of i and j. If different, set one root's parent to the other.</p>
+            
+            <h4>C++ Template</h4>
+            <pre><code>class DSU {
+    vector&lt;int&gt; parent;
+    vector&lt;int&gt; rank;
+public:
+    DSU(int n) {
+        parent.resize(n); rank.resize(n, 0);
+        for(int i=0; i&lt;n; i++) parent[i] = i;
+    }
+    
+    // Find with Path Compression
+    int find(int i) {
+        if(parent[i] == i) return i;
+        return parent[i] = find(parent[i]); 
+    }
+    
+    // Union by Rank
+    bool unite(int i, int j) {
+        int rootI = find(i);
+        int rootJ = find(j);
+        if(rootI == rootJ) return false; // Already connected, cycle detected!
+        
+        if(rank[rootI] &lt; rank[rootJ]) parent[rootI] = rootJ;
+        else if(rank[rootI] &gt; rank[rootJ]) parent[rootJ] = rootI;
+        else {
+            parent[rootJ] = rootI;
+            rank[rootI]++;
+        }
+        return true;
+    }
+};</code></pre>
+            
+            <h4>Learning Resources</h4>
+            <div class="resource-links">
+                <a href="https://www.geeksforgeeks.org/union-find/" target="_blank" class="btn">GFG: Union-Find</a>
+            </div>
+            
+            <h4>Practice Problems (Curated Top 15)</h4>
+            <div class="practice-list">
+                <a href="https://leetcode.com/problemset/all/?search=Number%20of%20Provinces" target="_blank">Number of Provinces</a><a href="https://leetcode.com/problemset/all/?search=Redundant%20Connection" target="_blank">Redundant Connection</a><a href="https://leetcode.com/problemset/all/?search=Accounts%20Merge" target="_blank">Accounts Merge</a><a href="https://leetcode.com/problemset/all/?search=Number%20of%20Operations%20to%20Make%20Network%20Connected" target="_blank">Number of Operations to Make Network Connected</a><a href="https://leetcode.com/problemset/all/?search=Evaluate%20Division" target="_blank">Evaluate Division</a><a href="https://leetcode.com/problemset/all/?search=Most%20Stones%20Removed%20with%20Same%20Row%20or%20Column" target="_blank">Most Stones Removed with Same Row or Column</a><a href="https://leetcode.com/problemset/all/?search=Satisfiability%20of%20Equality%20Equations" target="_blank">Satisfiability of Equality Equations</a><a href="https://leetcode.com/problemset/all/?search=Regions%20Cut%20By%20Slashes" target="_blank">Regions Cut By Slashes</a><a href="https://leetcode.com/problemset/all/?search=Similar%20String%20Groups" target="_blank">Similar String Groups</a><a href="https://leetcode.com/problemset/all/?search=Checking%20Existence%20of%20Edge%20Length%20Limited%20Paths" target="_blank">Checking Existence of Edge Length Limited Paths</a><a href="https://leetcode.com/problemset/all/?search=Number%20of%20Good%20Paths" target="_blank">Number of Good Paths</a><a href="https://leetcode.com/problemset/all/?search=Largest%20Component%20Size%20by%20Common%20Factor" target="_blank">Largest Component Size by Common Factor</a><a href="https://leetcode.com/problemset/all/?search=Find%20if%20Path%20Exists%20in%20Graph" target="_blank">Find if Path Exists in Graph</a><a href="https://leetcode.com/problemset/all/?search=Minimum%20Spanning%20Tree%20(Kruskal)" target="_blank">Minimum Spanning Tree (Kruskal)</a><a href="https://leetcode.com/problemset/all/?search=Water%20Distribution%20in%20a%20Village" target="_blank">Water Distribution in a Village</a>
+            </div>
+        </div>
+    </div>
+    
+    <div class="accordion">
+        <div class="accordion-header" onclick="toggleAccordion(this)">
+            <h3>15. Prefix Sum</h3>
+            <span>▼</span>
+        </div>
+        <div class="accordion-content">
+            <h4>Deep Theory & Concept</h4>
+            <p>If you need the sum of a subarray from index L to R frequently, calculating it takes O(N) every time. By building a prefix array where `P[i] = P[i-1] + arr[i]`, the sum of `[L, R]` becomes `P[R] - P[L-1]`, solving it in O(1).</p>
+            
+            <h4>Common Variants</h4>
+            <pre style="background: rgba(0,0,0,0.2); border: none; padding: 1rem;"><code style="color: var(--text-muted);">1. 1D Prefix Sum.
+2. 2D Prefix Sum (Matrix sums).
+3. Hash Map + Prefix Sum (Finding subarrays summing to K).</code></pre>
+            
+            <p><strong>How to Identify:</strong> Querying sums of subarrays. Keywords: 'subarray sum', 'divisible by k', 'contiguous array'.</p>
+            <p><strong>Approach to Solve:</strong> Hash Map + Prefix (Subarray Sum == K):
+1. Maintain running `sum`.
+2. Store frequencies of prefix sums in map.
+3. If `sum - K` exists in map, add its frequency to result count.
+4. Add current `sum` to map.</p>
+            
+            <h4>C++ Template</h4>
+            <pre><code>int subarraySum(vector&lt;int&gt;& nums, int k) {
+    unordered_map&lt;int, int&gt; prefixMap;
+    prefixMap[0] = 1; // Base case: sum 0 exists 1 time
+    
+    int currentSum = 0, count = 0;
+    
+    for(int num : nums) {
+        currentSum += num;
+        
+        // If (currentSum - k) exists, we found a valid subarray ending here
+        if(prefixMap.count(currentSum - k)) {
+            count += prefixMap[currentSum - k];
+        }
+        
+        prefixMap[currentSum]++;
+    }
+    return count;
+}</code></pre>
+            
+            <h4>Learning Resources</h4>
+            <div class="resource-links">
+                <a href="https://www.geeksforgeeks.org/prefix-sum-1d-array-1d-vector-1d-list/" target="_blank" class="btn">GFG: Prefix Sum</a>
+            </div>
+            
+            <h4>Practice Problems (Curated Top 15)</h4>
+            <div class="practice-list">
+                <a href="https://leetcode.com/problemset/all/?search=Range%20Sum%20Query%20-%20Immutable" target="_blank">Range Sum Query - Immutable</a><a href="https://leetcode.com/problemset/all/?search=Subarray%20Sum%20Equals%20K" target="_blank">Subarray Sum Equals K</a><a href="https://leetcode.com/problemset/all/?search=Continuous%20Subarray%20Sum" target="_blank">Continuous Subarray Sum</a><a href="https://leetcode.com/problemset/all/?search=Find%20Pivot%20Index" target="_blank">Find Pivot Index</a><a href="https://leetcode.com/problemset/all/?search=Product%20of%20Array%20Except%20Self" target="_blank">Product of Array Except Self</a><a href="https://leetcode.com/problemset/all/?search=Maximum%20Size%20Subarray%20Sum%20Equals%20k" target="_blank">Maximum Size Subarray Sum Equals k</a><a href="https://leetcode.com/problemset/all/?search=Contiguous%20Array" target="_blank">Contiguous Array</a><a href="https://leetcode.com/problemset/all/?search=Subarray%20Sums%20Divisible%20by%20K" target="_blank">Subarray Sums Divisible by K</a><a href="https://leetcode.com/problemset/all/?search=Binary%20Subarrays%20With%20Sum" target="_blank">Binary Subarrays With Sum</a><a href="https://leetcode.com/problemset/all/?search=Number%20of%20Submatrices%20That%20Sum%20to%20Target" target="_blank">Number of Submatrices That Sum to Target</a><a href="https://leetcode.com/problemset/all/?search=Matrix%20Block%20Sum" target="_blank">Matrix Block Sum</a><a href="https://leetcode.com/problemset/all/?search=Maximum%20Score%20After%20Splitting%20a%20String" target="_blank">Maximum Score After Splitting a String</a><a href="https://leetcode.com/problemset/all/?search=Ways%20to%20Make%20a%20Fair%20Array" target="_blank">Ways to Make a Fair Array</a><a href="https://leetcode.com/problemset/all/?search=Minimum%20Value%20to%20Get%20Positive%20Step%20by%20Step%20Sum" target="_blank">Minimum Value to Get Positive Step by Step Sum</a><a href="https://leetcode.com/problemset/all/?search=Corporate%20Flight%20Bookings" target="_blank">Corporate Flight Bookings</a>
+            </div>
+        </div>
+    </div>
+    
+    <div class="accordion">
+        <div class="accordion-header" onclick="toggleAccordion(this)">
+            <h3>16. Trie (Prefix Tree)</h3>
+            <span>▼</span>
+        </div>
+        <div class="accordion-content">
+            <h4>Deep Theory & Concept</h4>
+            <p>Instead of storing strings in a Hash Set (which takes O(L) time but hashes the entire string and handles collisions), a Trie stores strings character by character. A node has an array of 26 pointers (for a-z) to next nodes. It provides O(L) exact and prefix searches.</p>
+            
+            <h4>Common Variants</h4>
+            <pre style="background: rgba(0,0,0,0.2); border: none; padding: 1rem;"><code style="color: var(--text-muted);">1. Standard Trie (Insert, Search, StartsWith).
+2. Bit Trie (Storing binary representations for Maximum XOR problems).</code></pre>
+            
+            <p><strong>How to Identify:</strong> Dictionaries, autocomplete, spell checkers, prefix matching, XOR problems.</p>
+            <p><strong>Approach to Solve:</strong> 1. Create TrieNode with `TrieNode* children[26]` and `bool isEndOfWord`.
+2. Insert: iterate characters, if child null, create new node, move pointer. Set `isEnd` at final node.
+3. Search: similar traversal, return true if reached end and `isEnd` is true.</p>
+            
+            <h4>C++ Template</h4>
+            <pre><code>class TrieNode {
+public:
+    TrieNode* children[26] = {NULL};
+    bool isEndOfWord = false;
+};
+
+class Trie {
+    TrieNode* root;
+public:
+    Trie() { root = new TrieNode(); }
+    
+    void insert(string word) {
+        TrieNode* node = root;
+        for(char c : word) {
+            int idx = c - 'a';
+            if(!node-&gt;children[idx]) node-&gt;children[idx] = new TrieNode();
+            node = node-&gt;children[idx];
+        }
+        node-&gt;isEndOfWord = true;
+    }
+    
+    bool search(string word) {
+        TrieNode* node = root;
+        for(char c : word) {
+            int idx = c - 'a';
+            if(!node-&gt;children[idx]) return false;
+            node = node-&gt;children[idx];
+        }
+        return node-&gt;isEndOfWord;
+    }
+};</code></pre>
+            
+            <h4>Learning Resources</h4>
+            <div class="resource-links">
+                <a href="https://www.geeksforgeeks.org/trie-insert-and-search/" target="_blank" class="btn">GFG: Trie Structure</a>
+            </div>
+            
+            <h4>Practice Problems (Curated Top 15)</h4>
+            <div class="practice-list">
+                <a href="https://leetcode.com/problemset/all/?search=Implement%20Trie%20(Prefix%20Tree)" target="_blank">Implement Trie (Prefix Tree)</a><a href="https://leetcode.com/problemset/all/?search=Design%20Add%20and%20Search%20Words%20Data%20Structure" target="_blank">Design Add and Search Words Data Structure</a><a href="https://leetcode.com/problemset/all/?search=Word%20Search%20II" target="_blank">Word Search II</a><a href="https://leetcode.com/problemset/all/?search=Replace%20Words" target="_blank">Replace Words</a><a href="https://leetcode.com/problemset/all/?search=Maximum%20XOR%20of%20Two%20Numbers%20in%20an%20Array" target="_blank">Maximum XOR of Two Numbers in an Array</a><a href="https://leetcode.com/problemset/all/?search=Prefix%20and%20Suffix%20Search" target="_blank">Prefix and Suffix Search</a><a href="https://leetcode.com/problemset/all/?search=Palindrome%20Pairs" target="_blank">Palindrome Pairs</a><a href="https://leetcode.com/problemset/all/?search=Map%20Sum%20Pairs" target="_blank">Map Sum Pairs</a><a href="https://leetcode.com/problemset/all/?search=Stream%20of%20Characters" target="_blank">Stream of Characters</a><a href="https://leetcode.com/problemset/all/?search=Longest%20Word%20in%20Dictionary" target="_blank">Longest Word in Dictionary</a><a href="https://leetcode.com/problemset/all/?search=Concatenated%20Words" target="_blank">Concatenated Words</a><a href="https://leetcode.com/problemset/all/?search=Camelcase%20Matching" target="_blank">Camelcase Matching</a><a href="https://leetcode.com/problemset/all/?search=Implement%20Magic%20Dictionary" target="_blank">Implement Magic Dictionary</a><a href="https://leetcode.com/problemset/all/?search=Index%20Pairs%20of%20a%20String" target="_blank">Index Pairs of a String</a><a href="https://leetcode.com/problemset/all/?search=Search%20Suggestions%20System" target="_blank">Search Suggestions System</a>
+            </div>
+        </div>
+    </div>
+    
+    <div class="accordion">
+        <div class="accordion-header" onclick="toggleAccordion(this)">
+            <h3>17. In-place Reversal of a LinkedList</h3>
+            <span>▼</span>
+        </div>
+        <div class="accordion-content">
+            <h4>Deep Theory & Concept</h4>
+            <p>By manipulating the `next` pointers of nodes, we can reverse the list traversing it only once O(N) and using O(1) space.</p>
+            
+            <h4>Common Variants</h4>
+            <pre style="background: rgba(0,0,0,0.2); border: none; padding: 1rem;"><code style="color: var(--text-muted);">1. Reverse full list.
+2. Reverse sub-list (from position M to N).
+3. Reverse in K-groups.</code></pre>
+            
+            <p><strong>How to Identify:</strong> Linked List problems asking for reversal, checking palindrome, or reordering.</p>
+            <p><strong>Approach to Solve:</strong> 1. Need 3 pointers: `prev` (NULL), `curr` (head), `next` (temp).
+2. While `curr` != NULL:
+   `next = curr->next;` (save next node)
+   `curr->next = prev;` (reverse link)
+   `prev = curr;` (move prev forward)
+   `curr = next;` (move curr forward)
+3. Return `prev` (new head).</p>
+            
+            <h4>C++ Template</h4>
+            <pre><code>ListNode* reverseList(ListNode* head) {
+    ListNode* prev = NULL;
+    ListNode* curr = head;
+    
+    while (curr != NULL) {
+        ListNode* nextTemp = curr-&gt;next; // Store next
+        curr-&gt;next = prev;               // Reverse link
+        prev = curr;                     // Advance prev
+        curr = nextTemp;                 // Advance curr
+    }
+    return prev; // Prev is the new head
+}</code></pre>
+            
+            <h4>Learning Resources</h4>
+            <div class="resource-links">
+                <a href="https://www.geeksforgeeks.org/reverse-a-linked-list/" target="_blank" class="btn">GFG: Reverse Linked List</a>
+            </div>
+            
+            <h4>Practice Problems (Curated Top 15)</h4>
+            <div class="practice-list">
+                <a href="https://leetcode.com/problemset/all/?search=Reverse%20Linked%20List" target="_blank">Reverse Linked List</a><a href="https://leetcode.com/problemset/all/?search=Reverse%20Linked%20List%20II" target="_blank">Reverse Linked List II</a><a href="https://leetcode.com/problemset/all/?search=Reverse%20Nodes%20in%20k-Group" target="_blank">Reverse Nodes in k-Group</a><a href="https://leetcode.com/problemset/all/?search=Rotate%20List" target="_blank">Rotate List</a><a href="https://leetcode.com/problemset/all/?search=Palindrome%20Linked%20List" target="_blank">Palindrome Linked List</a><a href="https://leetcode.com/problemset/all/?search=Reorder%20List" target="_blank">Reorder List</a><a href="https://leetcode.com/problemset/all/?search=Swap%20Nodes%20in%20Pairs" target="_blank">Swap Nodes in Pairs</a><a href="https://leetcode.com/problemset/all/?search=Reverse%20Alternate%20K%20Nodes" target="_blank">Reverse Alternate K Nodes</a><a href="https://leetcode.com/problemset/all/?search=Rotate%20a%20Linked%20List" target="_blank">Rotate a Linked List</a><a href="https://leetcode.com/problemset/all/?search=Add%20Two%20Numbers" target="_blank">Add Two Numbers</a><a href="https://leetcode.com/problemset/all/?search=Add%20Two%20Numbers%20II" target="_blank">Add Two Numbers II</a><a href="https://leetcode.com/problemset/all/?search=Partition%20List" target="_blank">Partition List</a><a href="https://leetcode.com/problemset/all/?search=Odd%20Even%20Linked%20List" target="_blank">Odd Even Linked List</a><a href="https://leetcode.com/problemset/all/?search=Sort%20List" target="_blank">Sort List</a><a href="https://leetcode.com/problemset/all/?search=Flatten%20a%20Multilevel%20Doubly%20Linked%20List" target="_blank">Flatten a Multilevel Doubly Linked List</a>
+            </div>
+        </div>
+    </div>
+    
+    <div class="accordion">
+        <div class="accordion-header" onclick="toggleAccordion(this)">
+            <h3>18. K-way Merge (Heaps)</h3>
+            <span>▼</span>
+        </div>
+        <div class="accordion-content">
+            <h4>Deep Theory & Concept</h4>
+            <p>If you merge K lists linearly, it takes O(N*K). Using a Min-Heap of size K, we insert the first element of each list. We extract the min element, and insert the NEXT element from the same list that the min element came from. Time complexity becomes O(N log K) where N is total elements.</p>
+            
+            <h4>Common Variants</h4>
+            <pre style="background: rgba(0,0,0,0.2); border: none; padding: 1rem;"><code style="color: var(--text-muted);">1. Merge K Linked Lists.
+2. Kth Smallest in M Sorted Arrays.
+3. Smallest Range covering K lists.</code></pre>
+            
+            <p><strong>How to Identify:</strong> Input is K sorted arrays, lists, or matrices. Need to merge them or find median/kth element across them.</p>
+            <p><strong>Approach to Solve:</strong> 1. Create Min-Heap of custom objects (storing value, array_index, element_index).
+2. Push first element of all K arrays.
+3. Pop min, add to result.
+4. If the array from which min came has more elements, push its next element.
+5. Repeat until heap is empty.</p>
+            
+            <h4>C++ Template</h4>
+            <pre><code>ListNode* mergeKLists(vector&lt;ListNode*&gt;& lists) {
+    // Custom comparator for Min Heap of ListNodes
+    auto comp = [](ListNode* a, ListNode* b) { return a-&gt;val &gt; b-&gt;val; };
+    priority_queue&lt;ListNode*, vector&lt;ListNode*&gt;, decltype(comp)&gt; pq(comp);
+    
+    // Push the head of all K lists
+    for(auto node : lists) {
+        if(node) pq.push(node);
+    }
+    
+    ListNode dummy(0);
+    ListNode* tail = &dummy;
+    
+    while(!pq.empty()) {
+        ListNode* minNode = pq.top(); pq.pop();
+        tail-&gt;next = minNode;
+        tail = tail-&gt;next;
+        
+        // Push next node from the same list
+        if(minNode-&gt;next) pq.push(minNode-&gt;next);
+    }
+    return dummy.next;
+}</code></pre>
+            
+            <h4>Learning Resources</h4>
+            <div class="resource-links">
+                <a href="https://www.geeksforgeeks.org/merge-k-sorted-arrays/" target="_blank" class="btn">GFG: Merge K Sorted Arrays</a>
+            </div>
+            
+            <h4>Practice Problems (Curated Top 15)</h4>
+            <div class="practice-list">
+                <a href="https://leetcode.com/problemset/all/?search=Merge%20k%20Sorted%20Lists" target="_blank">Merge k Sorted Lists</a><a href="https://leetcode.com/problemset/all/?search=Kth%20Smallest%20Element%20in%20a%20Sorted%20Matrix" target="_blank">Kth Smallest Element in a Sorted Matrix</a><a href="https://leetcode.com/problemset/all/?search=Find%20K%20Pairs%20with%20Smallest%20Sums" target="_blank">Find K Pairs with Smallest Sums</a><a href="https://leetcode.com/problemset/all/?search=Smallest%20Range%20Covering%20Elements%20from%20K%20Lists" target="_blank">Smallest Range Covering Elements from K Lists</a><a href="https://leetcode.com/problemset/all/?search=Ugly%20Number%20II" target="_blank">Ugly Number II</a><a href="https://leetcode.com/problemset/all/?search=Super%20Ugly%20Number" target="_blank">Super Ugly Number</a><a href="https://leetcode.com/problemset/all/?search=Kth%20Smallest%20Number%20in%20Multiplication%20Table" target="_blank">Kth Smallest Number in Multiplication Table</a><a href="https://leetcode.com/problemset/all/?search=Find%20the%20Kth%20Smallest%20Sum%20of%20a%20Matrix%20With%20Sorted%20Rows" target="_blank">Find the Kth Smallest Sum of a Matrix With Sorted Rows</a><a href="https://leetcode.com/problemset/all/?search=Merge%20Sorted%20Array" target="_blank">Merge Sorted Array</a><a href="https://leetcode.com/problemset/all/?search=Intersection%20of%20Three%20Sorted%20Arrays" target="_blank">Intersection of Three Sorted Arrays</a><a href="https://leetcode.com/problemset/all/?search=Meeting%20Rooms%20II" target="_blank">Meeting Rooms II</a><a href="https://leetcode.com/problemset/all/?search=Minimum%20Cost%20to%20Hire%20K%20Workers" target="_blank">Minimum Cost to Hire K Workers</a><a href="https://leetcode.com/problemset/all/?search=Sort%20an%20Array" target="_blank">Sort an Array</a><a href="https://leetcode.com/problemset/all/?search=Median%20of%20Two%20Sorted%20Arrays" target="_blank">Median of Two Sorted Arrays</a><a href="https://leetcode.com/problemset/all/?search=Find%20the%20Kth%20Largest%20Integer%20in%20the%20Array" target="_blank">Find the Kth Largest Integer in the Array</a>
+            </div>
+        </div>
+    </div>
+    
+    <div class="accordion">
+        <div class="accordion-header" onclick="toggleAccordion(this)">
+            <h3>19. Two Heaps</h3>
+            <span>▼</span>
+        </div>
+        <div class="accordion-content">
+            <h4>Deep Theory & Concept</h4>
+            <p>By splitting data into a lower half (Max Heap) and upper half (Min Heap), the median is always at the top of the heaps. Insertion is O(log N) and finding median is O(1).</p>
+            
+            <h4>Common Variants</h4>
+            <pre style="background: rgba(0,0,0,0.2); border: none; padding: 1rem;"><code style="color: var(--text-muted);">1. Data Stream Median.
+2. Sliding Window Median.</code></pre>
+            
+            <p><strong>How to Identify:</strong> Dynamic calculation of Medians. 'Stream of numbers'.</p>
+            <p><strong>Approach to Solve:</strong> 1. Keep maxHeap for lower half, minHeap for upper half.
+2. Insert: If num <= maxHeap.top(), push to maxHeap. Else push to minHeap.
+3. Balance: Sizes must differ by at most 1. If maxHeap size > minHeap size + 1, pop from max and push to min.
+4. Median: If odd, top of larger heap. If even, average of tops.</p>
+            
+            <h4>C++ Template</h4>
+            <pre><code>class MedianFinder {
+    priority_queue&lt;int&gt; maxHeap; // Lower half
+    priority_queue&lt;int, vector&lt;int&gt;, greater&lt;int&gt;&gt; minHeap; // Upper half
+public:
+    void addNum(int num) {
+        if (maxHeap.empty() || num &lt;= maxHeap.top()) maxHeap.push(num);
+        else minHeap.push(num);
+        
+        // Balance
+        if (maxHeap.size() &gt; minHeap.size() + 1) {
+            minHeap.push(maxHeap.top()); maxHeap.pop();
+        } else if (minHeap.size() &gt; maxHeap.size()) {
+            maxHeap.push(minHeap.top()); minHeap.pop();
+        }
+    }
+    
+    double findMedian() {
+        if (maxHeap.size() == minHeap.size())
+            return (maxHeap.top() + minHeap.top()) / 2.0;
+        return maxHeap.top(); // maxHeap is designed to hold the extra element
+    }
+};</code></pre>
+            
+            <h4>Learning Resources</h4>
+            <div class="resource-links">
+                <a href="https://www.geeksforgeeks.org/median-of-stream-of-integers-running-integers/" target="_blank" class="btn">GFG: Median of Stream</a>
+            </div>
+            
+            <h4>Practice Problems (Curated Top 15)</h4>
+            <div class="practice-list">
+                <a href="https://leetcode.com/problemset/all/?search=Find%20Median%20from%20Data%20Stream" target="_blank">Find Median from Data Stream</a><a href="https://leetcode.com/problemset/all/?search=Sliding%20Window%20Median" target="_blank">Sliding Window Median</a><a href="https://leetcode.com/problemset/all/?search=Maximize%20Capital" target="_blank">Maximize Capital</a><a href="https://leetcode.com/problemset/all/?search=Next%20Interval" target="_blank">Next Interval</a><a href="https://leetcode.com/problemset/all/?search=IPO" target="_blank">IPO</a><a href="https://leetcode.com/problemset/all/?search=Meeting%20Rooms%20III" target="_blank">Meeting Rooms III</a><a href="https://leetcode.com/problemset/all/?search=Process%20Tasks%20Using%20Servers" target="_blank">Process Tasks Using Servers</a><a href="https://leetcode.com/problemset/all/?search=Single-Threaded%20CPU" target="_blank">Single-Threaded CPU</a><a href="https://leetcode.com/problemset/all/?search=Minimum%20Number%20of%20Refueling%20Stops" target="_blank">Minimum Number of Refueling Stops</a><a href="https://leetcode.com/problemset/all/?search=Trapping%20Rain%20Water%20II" target="_blank">Trapping Rain Water II</a><a href="https://leetcode.com/problemset/all/?search=Swim%20in%20Rising%20Water" target="_blank">Swim in Rising Water</a><a href="https://leetcode.com/problemset/all/?search=Find%20K%20Pairs%20with%20Smallest%20Sums" target="_blank">Find K Pairs with Smallest Sums</a><a href="https://leetcode.com/problemset/all/?search=Kth%20Smallest%20Element%20in%20a%20Sorted%20Matrix" target="_blank">Kth Smallest Element in a Sorted Matrix</a><a href="https://leetcode.com/problemset/all/?search=Reorganize%20String" target="_blank">Reorganize String</a><a href="https://leetcode.com/problemset/all/?search=Task%20Scheduler" target="_blank">Task Scheduler</a>
+            </div>
+        </div>
+    </div>
+    
+    <div class="accordion">
+        <div class="accordion-header" onclick="toggleAccordion(this)">
+            <h3>20. Bit Manipulation</h3>
+            <span>▼</span>
+        </div>
+        <div class="accordion-content">
+            <h4>Deep Theory & Concept</h4>
+            <p>Bit manipulation is extremely fast O(1) space and time. Key facts: `X ^ X = 0`, `X ^ 0 = X`, `X & (X-1)` removes the lowest set bit. Useful in subset generation and finding missing items.</p>
+            
+            <h4>Common Variants</h4>
+            <pre style="background: rgba(0,0,0,0.2); border: none; padding: 1rem;"><code style="color: var(--text-muted);">1. XOR properties (Single Number).
+2. Bit Masking (representing sets as integers).
+3. Counting set bits.</code></pre>
+            
+            <p><strong>How to Identify:</strong> Constraints are small (N < 32), checking parity, 'find element that appears once'.</p>
+            <p><strong>Approach to Solve:</strong> Single Number logic: Since A ^ A = 0, XORing all elements in an array where every element appears twice except one will leave the unique element.</p>
+            
+            <h4>C++ Template</h4>
+            <pre><code>// 1. Find Single Number
+int singleNumber(vector&lt;int&gt;& nums) {
+    int ans = 0;
+    for(int num : nums) ans ^= num;
+    return ans;
+}
+
+// 2. Count Set Bits (Kernighan's Algorithm)
+int countSetBits(int n) {
+    int count = 0;
+    while(n) {
+        n = n & (n - 1); // clears lowest set bit
+        count++;
+    }
+    return count;
+}</code></pre>
+            
+            <h4>Learning Resources</h4>
+            <div class="resource-links">
+                <a href="https://www.geeksforgeeks.org/bitwise-operators-in-c-cpp/" target="_blank" class="btn">GFG: Bit Magic</a>
+            </div>
+            
+            <h4>Practice Problems (Curated Top 15)</h4>
+            <div class="practice-list">
+                <a href="https://leetcode.com/problemset/all/?search=Single%20Number" target="_blank">Single Number</a><a href="https://leetcode.com/problemset/all/?search=Single%20Number%20II" target="_blank">Single Number II</a><a href="https://leetcode.com/problemset/all/?search=Single%20Number%20III" target="_blank">Single Number III</a><a href="https://leetcode.com/problemset/all/?search=Number%20of%201%20Bits" target="_blank">Number of 1 Bits</a><a href="https://leetcode.com/problemset/all/?search=Counting%20Bits" target="_blank">Counting Bits</a><a href="https://leetcode.com/problemset/all/?search=Missing%20Number" target="_blank">Missing Number</a><a href="https://leetcode.com/problemset/all/?search=Reverse%20Bits" target="_blank">Reverse Bits</a><a href="https://leetcode.com/problemset/all/?search=Bitwise%20AND%20of%20Numbers%20Range" target="_blank">Bitwise AND of Numbers Range</a><a href="https://leetcode.com/problemset/all/?search=Maximum%20Product%20of%20Word%20Lengths" target="_blank">Maximum Product of Word Lengths</a><a href="https://leetcode.com/problemset/all/?search=Power%20of%20Two" target="_blank">Power of Two</a><a href="https://leetcode.com/problemset/all/?search=Subsets" target="_blank">Subsets</a><a href="https://leetcode.com/problemset/all/?search=Total%20Hamming%20Distance" target="_blank">Total Hamming Distance</a><a href="https://leetcode.com/problemset/all/?search=Sum%20of%20Two%20Integers" target="_blank">Sum of Two Integers</a><a href="https://leetcode.com/problemset/all/?search=Majority%20Element" target="_blank">Majority Element</a><a href="https://leetcode.com/problemset/all/?search=Maximum%20XOR%20of%20Two%20Numbers%20in%20an%20Array" target="_blank">Maximum XOR of Two Numbers in an Array</a>
+            </div>
+        </div>
+    </div>
+    
+            </div>
+        </section>
+        
+        <!-- Time Complexity Mastery -->
+        <section id="complexity">
+            <h2>Time Complexity Mastery</h2>
+            
+            <div class="card">
+                <h3>1. Deep Theory of Time Complexity</h3>
+                <p>Time complexity isn't about seconds; it's about the <strong>rate of growth</strong> of operations relative to the input size `N`. We focus on the worst-case scenario (Big-O).</p>
+                <ul>
+                    <li><strong>O(1) Constant:</strong> Time does not change with N. (e.g., Array lookup `arr[5]`, Hash Map lookup, Math formulas like `N*(N+1)/2`).</li>
+                    <li><strong>O(log N) Logarithmic:</strong> Data is halved at every step. (e.g., Binary Search, traversing a balanced BST). <i>If you see a sorted array and require an algorithm faster than O(N), it's O(log N).</i></li>
+                    <li><strong>O(N) Linear:</strong> Visiting every element a fixed number of times. (e.g., Iterating an array, Sliding Window).</li>
+                    <li><strong>O(N log N) Log-Linear:</strong> Doing an O(log N) operation N times. (e.g., Sorting an array, pushing N elements into a Heap/Priority Queue).</li>
+                    <li><strong>O(N^2) Quadratic:</strong> Comparing every element with every other element. (e.g., Nested loops, Bubble sort). Usually acceptable only if `N < 1000`.</li>
+                    <li><strong>O(2^N) Exponential:</strong> Branching into two paths at every step. (e.g., finding all subsets, basic recursive Fibonacci).</li>
+                    <li><strong>O(N!) Factorial:</strong> Finding all permutations of a string.</li>
+                </ul>
+
+                <h3>2. How to Decide Required Complexity from Constraints</h3>
+                <div class="info-box">
+                    <h4>The "10^8 Rule"</h4>
+                    <p>Modern competitive programming servers (like LeetCode, Codeforces, HackerRank) can process roughly <strong>10^8 operations per second</strong> in C++. If your algorithm's worst-case operations exceed 10^8, you will get a <strong>Time Limit Exceeded (TLE)</strong>.</p>
+                </div>
+                
+                <p>Before writing a single line of code, look at the constraints provided in the problem description to reverse-engineer the required time complexity:</p>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Constraint on N</th>
+                            <th>Target Time Complexity</th>
+                            <th>Algorithms / Patterns to apply</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr><td>N &le; 10...12</td><td>O(N!) or O(2^N)</td><td>Backtracking (Permutations, N-Queens)</td></tr>
+                        <tr><td>N &le; 20...25</td><td>O(2^N) or O(N &middot; 2^N)</td><td>Backtracking (Subsets), Bitmask DP</td></tr>
+                        <tr><td>N &le; 100</td><td>O(N^3) or O(N^4)</td><td>Floyd-Warshall, 3D/4D Dynamic Programming</td></tr>
+                        <tr><td>N &le; 10^3...10^4</td><td>O(N^2)</td><td>Nested Loops, 2D DP (0/1 Knapsack)</td></tr>
+                        <tr><td>N &le; 10^5...10^6</td><td>O(N log N) or O(N)</td><td>Sorting, Binary Search, Heaps, Sliding Window, Two Pointers</td></tr>
+                        <tr><td>N &le; 10^7...10^8</td><td>O(N)</td><td>Strictly linear. Prefix Arrays, Hash Maps. Avoid Sorting.</td></tr>
+                        <tr><td>N &ge; 10^9</td><td>O(log N) or O(1)</td><td>Binary Search on Answer, Mathematical formulas</td></tr>
+                    </tbody>
+                </table>
+                
+                <h3>3. How to Manage and Optimize Complexity</h3>
+                <p>If you write a brute force `O(N^2)` solution but the constraint is `10^5`, you must optimize. Here is the standard playbook to manage time complexity:</p>
+                <ol>
+                    <li><strong>Space-Time Tradeoff:</strong> Can you use extra memory to save time? Use a Hash Map to store previously seen elements to turn an `O(N^2)` search into `O(N)`. (Pattern: Two Sum).</li>
+                    <li><strong>Precomputation:</strong> Do you calculate the same sum multiple times? Compute a Prefix Sum array once in `O(N)` so future queries take `O(1)`.</li>
+                    <li><strong>Memoization (DP):</strong> Is your recursion calculating the same subproblems repeatedly? Store the results in a matrix/array to drop from `O(2^N)` down to `O(N)` or `O(N^2)`.</li>
+                    <li><strong>Sort Data First:</strong> Does order matter? If not, sorting takes `O(N log N)` but allows you to use Two Pointers `O(N)` or Binary Search `O(log N)` subsequently.</li>
+                    <li><strong>Lazy Evaluation / Monotonic Stack:</strong> Don't process elements until you have to. If looking for the "Next Greater Element", use a stack to defer processing, achieving `O(N)` instead of nested loops.</li>
+                </ol>
+            </div>
+        </section>
+    </main>
+
+    <script>
+        document.querySelectorAll('.nav-links a').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                document.querySelectorAll('.nav-links a').forEach(a => a.classList.remove('active'));
+                this.classList.add('active');
+                const target = document.querySelector(this.getAttribute('href'));
+                window.scrollTo({
+                    top: target.offsetTop,
+                    behavior: 'smooth'
+                });
+            });
+        });
+
+        function toggleAccordion(el) {
+            const accordion = el.parentElement;
+            accordion.classList.toggle('active');
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,1557 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>C++ STL Mastery Encyclopedia</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&family=Fira+Code:wght@400;500&display=swap');
+        
+        :root {
+            --bg-dark: #0a0f1a;
+            --bg-card: #151b2b;
+            --bg-method: #1e293b;
+            --text-main: #e2e8f0;
+            --text-muted: #94a3b8;
+            --accent-cyan: #06b6d4;
+            --accent-blue: #3b82f6;
+            --accent-purple: #8b5cf6;
+            --border-color: #334155;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --danger: #ef4444;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-dark);
+            color: var(--text-main);
+            line-height: 1.6;
+            display: flex;
+            overflow-x: hidden;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            width: 320px;
+            height: 100vh;
+            position: fixed;
+            background: rgba(21, 27, 43, 0.95);
+            backdrop-filter: blur(12px);
+            border-right: 1px solid var(--border-color);
+            padding: 2rem 1rem;
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+            z-index: 100;
+            overflow-y: auto;
+        }
+
+        .sidebar h2 {
+            font-weight: 800;
+            background: linear-gradient(45deg, var(--accent-cyan), var(--accent-blue));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 0.5rem;
+            text-align: center;
+        }
+        
+        .back-link {
+            text-align: center;
+            display: block;
+            margin-bottom: 1.5rem;
+            color: var(--accent-purple);
+            font-size: 0.9rem;
+        }
+
+        .nav-links {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 0.2rem;
+        }
+
+        .nav-links li.category {
+            margin-top: 1rem;
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--text-muted);
+            padding-left: 1rem;
+            font-weight: 800;
+        }
+
+        .nav-links li a {
+            text-decoration: none;
+            color: var(--text-main);
+            font-weight: 500;
+            padding: 0.6rem 1rem;
+            border-radius: 6px;
+            display: block;
+            transition: all 0.2s ease;
+        }
+
+        .nav-links li a:hover, .nav-links li a.active {
+            background: rgba(6, 182, 212, 0.1);
+            color: var(--accent-cyan);
+            padding-left: 1.5rem;
+        }
+
+        /* Main Content */
+        .main-content {
+            margin-left: 320px;
+            padding: 3rem 4rem;
+            flex: 1;
+            max-width: calc(100vw - 320px);
+        }
+
+        section {
+            margin-bottom: 5rem;
+            animation: fadeIn 0.6s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        h1 {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            color: #fff;
+        }
+        
+        h2 {
+            font-size: 2.2rem;
+            margin-bottom: 1.5rem;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 0.5rem;
+            color: var(--accent-blue);
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .header-badge {
+            font-size: 0.9rem;
+            background: rgba(255,255,255,0.1);
+            padding: 4px 10px;
+            border-radius: 4px;
+            color: #fff;
+            vertical-align: middle;
+        }
+
+        h3 {
+            font-size: 1.5rem;
+            margin: 2rem 0 1rem;
+            color: var(--accent-cyan);
+        }
+
+        p {
+            margin-bottom: 1rem;
+            color: var(--text-muted);
+        }
+
+        /* Code Blocks */
+        pre {
+            background: #0f1423;
+            padding: 1.2rem;
+            border-radius: 8px;
+            border: 1px solid var(--border-color);
+            overflow-x: auto;
+            margin-bottom: 1.5rem;
+            position: relative;
+        }
+
+        code {
+            font-family: 'Fira Code', monospace;
+            color: #a5b4fc;
+            font-size: 0.95rem;
+        }
+        
+        .inline-code {
+            background: #0f1423;
+            padding: 0.2rem 0.5rem;
+            border-radius: 4px;
+            color: #cbd5e1;
+            font-family: 'Fira Code', monospace;
+            font-size: 0.9rem;
+            border: 1px solid #334155;
+        }
+
+        /* Info boxes */
+        .info-box {
+            background: rgba(16, 185, 129, 0.1);
+            border-left: 4px solid var(--success);
+            padding: 1.2rem;
+            border-radius: 0 8px 8px 0;
+            margin: 1.5rem 0;
+        }
+        
+        .info-box h4 {
+            margin-top: 0;
+            margin-bottom: 0.5rem;
+            color: var(--success);
+        }
+        
+        .syntax-box {
+            background: rgba(139, 92, 246, 0.1);
+            border-left: 4px solid var(--accent-purple);
+            padding: 1.5rem;
+            border-radius: 0 8px 8px 0;
+            margin: 1.5rem 0;
+        }
+        
+        .syntax-box h4 {
+            margin-top: 0;
+            margin-bottom: 0.5rem;
+            color: var(--accent-purple);
+        }
+        
+        .danger-box {
+            background: rgba(239, 68, 68, 0.1);
+            border-left: 4px solid var(--danger);
+            padding: 1.2rem;
+            border-radius: 0 8px 8px 0;
+            margin: 1.5rem 0;
+        }
+        
+        .danger-box h4 {
+            margin-top: 0;
+            margin-bottom: 0.5rem;
+            color: var(--danger);
+        }
+        
+        .usecase-box {
+            background: rgba(59, 130, 246, 0.1);
+            border-left: 4px solid var(--accent-blue);
+            padding: 1rem;
+            border-radius: 0 8px 8px 0;
+            margin: 1rem 0;
+            font-size: 0.95rem;
+        }
+        
+        .usecase-box strong {
+            color: var(--accent-blue);
+        }
+
+        /* Detailed Method Cards */
+        .method-card {
+            background: var(--bg-method);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        
+        .method-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 1rem;
+            margin-bottom: 1rem;
+        }
+        
+        .method-name {
+            font-size: 1.3rem;
+            color: #fff;
+            font-family: 'Fira Code', monospace;
+            font-weight: 600;
+        }
+        
+        .method-comp {
+            padding: 0.3rem 0.8rem;
+            border-radius: 50px;
+            font-size: 0.85rem;
+            font-weight: 700;
+            background: rgba(0,0,0,0.3);
+        }
+        
+        .complexity-o1 { color: var(--success); border: 1px solid var(--success); }
+        .complexity-olgn { color: var(--warning); border: 1px solid var(--warning); }
+        .complexity-on { color: var(--danger); border: 1px solid var(--danger); }
+        
+        .example-block {
+            margin-top: 1rem;
+        }
+        
+        .example-title {
+            font-size: 0.9rem;
+            color: var(--accent-cyan);
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        @media (max-width: 1024px) {
+            .sidebar {
+                transform: translateX(-100%);
+            }
+            .main-content {
+                margin-left: 0;
+                padding: 2rem;
+                max-width: 100vw;
+            }
+            .method-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <nav class="sidebar">
+        <h2>STL Encyclopedia</h2>
+        <a href="cpp_dsa_guide.html" class="back-link">← Back to Main Dashboard</a>
+        <ul class="nav-links">
+            <li class="category">Sequence Containers</li>
+            <li><a href="#vector">std::vector</a></li>
+            <li><a href="#list">std::list</a></li>
+            <li><a href="#deque">std::deque</a></li>
+            
+            <li class="category">Associative (Trees)</li>
+            <li><a href="#set">std::set & multiset</a></li>
+            <li><a href="#map">std::map & multimap</a></li>
+            
+            <li class="category">Unordered (Hashes)</li>
+            <li><a href="#unordered_set">std::unordered_set</a></li>
+            <li><a href="#unordered_map">std::unordered_map</a></li>
+            
+            <li class="category">Adaptors</li>
+            <li><a href="#stack">std::stack</a></li>
+            <li><a href="#queue">std::queue</a></li>
+            <li><a href="#priority_queue">std::priority_queue</a></li>
+            
+            <li class="category">Algorithms & Utils</li>
+            <li><a href="#pairs">Pairs & Tuples</a></li>
+            <li><a href="#algorithms">Algorithms (<algorithm>)</a></li>
+        </ul>
+    </nav>
+
+    <main class="main-content">
+        <section id="intro">
+            <h1>C++ STL Massive Mastery Encyclopedia</h1>
+            <p>This is your absolutely exhaustive reference guide to the C++ Standard Template Library. <strong>Every container</strong>, <strong>every critical method</strong>, its <strong>exact initialization syntax</strong>, exact time complexity, its <strong>exact deep use cases</strong>, and <strong>massive amounts of practical code examples</strong> are documented here.</p>
+        </section>
+
+        <!-- Dynamic Content Injected Here -->
+        
+    <section id="vector">
+        <h2>std::vector <span class="header_badge">#include <vector></span></h2>
+        
+        <p><strong>Under the hood:</strong> A Dynamic Array storing elements contiguously in memory. Because memory is contiguous, CPU Cache utilization is phenomenal, making vector the absolute fastest container in C++ for general traversal.</p>
+        
+        <div class="info-box">
+            <h4>🎯 General Use Case</h4>
+            <p>Use for almost everything by default. Best when you need fast O(1) access by index and only need to add/remove elements at the END.</p>
+        </div>
+        
+        
+        <div class="syntax-box">
+            <h4><span style="font-size: 1.2em;">💻</span> Initialization Syntax</h4>
+            <pre style="background: rgba(0,0,0,0.2); border: none; margin-bottom: 0;"><code>vector&lt;DataType&gt; vectorName;
+vector&lt;DataType&gt; vectorName(size, initialValue);
+vector&lt;vector&lt;DataType&gt;&gt; matrixName(rows, vector&lt;DataType&gt;(cols, initialValue));</code></pre>
+        </div>
+        
+        
+        
+        <div class="danger-box">
+            <h4><span style="font-size: 1.2em;">⚠</span> Watch Out</h4>
+            <p>Do NOT use if you need to frequently insert or erase elements at the FRONT or MIDDLE. This takes O(N) time because all subsequent elements must be physically shifted in memory.</p>
+        </div>
+        
+        
+        <h3>Detailed Methods & Examples</h3>
+        
+        <div class="method-card">
+            <div class="method-header">
+                <span class="method-name">push_back(val)</span>
+                <span class="method-comp complexity-o1">Amortized O(1)</span>
+            </div>
+            
+            <p><strong>Description:</strong> Adds element to the end. Creates a copy of the object.</p>
+            
+            <div class="usecase-box">
+                <strong>🎯 Deep Use Case:</strong> Standard array building. Extremely common when you don't know the final size of the array ahead of time.
+            </div>
+            
+            <div class="example-block">
+                <div class="example-title">Examples</div>
+                <pre><code>// Ex 1: Basic insertion\nvector<int> v;\nv.push_back(10);\nv.push_back(20);</code></pre><pre><code>// Ex 2: String vector\nvector<string> words;\nwords.push_back("Hello");</code></pre><pre><code>// Ex 3: Building a Graph Adjacency List\nvector<vector<int>> adj(5);\nadj[0].push_back(1); // Directed Edge from node 0 to 1</code></pre>
+            </div>
+        </div>
+        
+        <div class="method-card">
+            <div class="method-header">
+                <span class="method-name">emplace_back(args...)</span>
+                <span class="method-comp complexity-o1">Amortized O(1)</span>
+            </div>
+            
+            <p><strong>Description:</strong> Constructs the element in-place at the end. Faster than push_back for pairs/objects.</p>
+            
+            <div class="usecase-box">
+                <strong>🎯 Deep Use Case:</strong> Optimization. Whenever you are pushing a Pair, Struct, or Object, use emplace_back to avoid creating a temporary object and copying it.
+            </div>
+            
+            <div class="example-block">
+                <div class="example-title">Examples</div>
+                <pre><code>// Ex 1: Emplacing pairs directly (No {} needed)\nvector<pair<int,string>> v;\nv.emplace_back(1, "apple"); // Instantly created inside vector</code></pre><pre><code>// Ex 2: Emplacing a custom struct\nstruct Node { int x, y; };\nvector<Node> nodes;\nnodes.emplace_back(10, 20);</code></pre>
+            </div>
+        </div>
+        
+        <div class="method-card">
+            <div class="method-header">
+                <span class="method-name">pop_back()</span>
+                <span class="method-comp complexity-o1">O(1)</span>
+            </div>
+            
+            <p><strong>Description:</strong> Removes the last element. Does not return it.</p>
+            
+            <div class="usecase-box">
+                <strong>🎯 Deep Use Case:</strong> Crucial for Backtracking (DFS). When exploring a path, you push the node. When returning from the recursive call, you pop it off to try another path.
+            </div>
+            
+            <div class="example-block">
+                <div class="example-title">Examples</div>
+                <pre><code>// Ex 1: Standard pop\nvector<int> v = {1, 2, 3};\nv.pop_back(); // {1, 2}</code></pre><pre><code>// Ex 2: The Backtracking Pattern\npath.push_back(node);\ndfs(node, path); // Recursive call\npath.pop_back(); // Undo the choice (Backtrack)</code></pre>
+            </div>
+        </div>
+        
+        <div class="method-card">
+            <div class="method-header">
+                <span class="method-name">v[i] or v.at(i)</span>
+                <span class="method-comp complexity-o1">O(1)</span>
+            </div>
+            
+            <p><strong>Description:</strong> Access element. .at(i) throws exception if out of bounds. v[i] is unchecked and slightly faster.</p>
+            
+            <div class="usecase-box">
+                <strong>🎯 Deep Use Case:</strong> Accessing DP tables, reading specific indices. In competitive programming, always use v[i] for speed.
+            </div>
+            
+            <div class="example-block">
+                <div class="example-title">Examples</div>
+                <pre><code>// Ex 1: Fast array access\nint x = v[0];</code></pre><pre><code>// Ex 2: Safe access (good for debugging)\ntry { cout << v.at(100); }\ncatch (const std::out_of_range& e) { cout << "Out of Bounds!"; }</code></pre>
+            </div>
+        </div>
+        
+        <div class="method-card">
+            <div class="method-header">
+                <span class="method-name">front() / back()</span>
+                <span class="method-comp complexity-o1">O(1)</span>
+            </div>
+            
+            <p><strong>Description:</strong> Returns reference to first/last element.</p>
+            
+            <div class="usecase-box">
+                <strong>🎯 Deep Use Case:</strong> Getting the most recently added element (back) or the oldest (front) without needing to calculate the index.
+            </div>
+            
+            <div class="example-block">
+                <div class="example-title">Examples</div>
+                <pre><code>// Ex 1: Getting ends\nvector<int> v = {1, 2, 3};\ncout << v.front(); // 1\ncout << v.back(); // 3</code></pre><pre><code>// Ex 2: Modifying ends\nv.back() = 99; // {1, 2, 99}</code></pre>
+            </div>
+        </div>
+        
+        <div class="method-card">
+            <div class="method-header">
+                <span class="method-name">size() / empty()</span>
+                <span class="method-comp complexity-o1">O(1)</span>
+            </div>
+            
+            <p><strong>Description:</strong> Returns number of elements / true if size is 0.</p>
+            
+            <div class="usecase-box">
+                <strong>🎯 Deep Use Case:</strong> Looping bounds, or checking if there's still data left to process.
+            </div>
+            
+            <div class="example-block">
+                <div class="example-title">Examples</div>
+                <pre><code>// Ex 1: Standard loop\nfor(int i=0; i<v.size(); i++) { ... }</code></pre><pre><code>// Ex 2: While loop safety\nwhile(!v.empty()) {\n    cout << v.back();\n    v.pop_back();\n}</code></pre>
+            </div>
+        </div>
+        
+        <div class="method-card">
+            <div class="method-header">
+                <span class="method-name">resize(n, val)</span>
+                <span class="method-comp complexity-on">O(N)</span>
+            </div>
+            
+            <p><strong>Description:</strong> Resizes the vector to contain n elements. New elements are initialized to val.</p>
+            
+            <div class="usecase-box">
+                <strong>🎯 Deep Use Case:</strong> Pre-allocating space for DP tables (Dynamic Programming) when the dimensions are known.
+            </div>
+            
+            <div class="example-block">
+                <div class="example-title">Examples</div>
+                <pre><code>// Ex 1: 1D DP table\nvector<int> dp;\ndp.resize(100, -1); // 100 elements initialized to -1</code></pre><pre><code>// Ex 2: Resizing a 2D matrix\nvector<vector<int>> matrix;\nmatrix.resize(5, vector<int>(5, 0)); // 5x5 matrix of zeros</code></pre>
+            </div>
+        </div>
+        
+        <div class="method-card">
+            <div class="method-header">
+                <span class="method-name">clear()</span>
+                <span class="method-comp complexity-on">O(N)</span>
+            </div>
+            
+            <p><strong>Description:</strong> Destroys all elements (size becomes 0). Capacity usually remains unchanged.</p>
+            
+            <div class="usecase-box">
+                <strong>🎯 Deep Use Case:</strong> Resetting a global vector between multiple test cases without reallocating memory.
+            </div>
+            
+            <div class="example-block">
+                <div class="example-title">Examples</div>
+                <pre><code>// Ex 1: Clearing state for next test case\nvector<int> visited;\nvoid solve() {\n    visited.clear();\n    // ... run algorithm\n}</code></pre>
+            </div>
+        </div>
+        
+        <div class="method-card">
+            <div class="method-header">
+                <span class="method-name">insert(iterator, val)</span>
+                <span class="method-comp complexity-on">O(N)</span>
+            </div>
+            
+            <p><strong>Description:</strong> Inserts element before iterator. Shifts everything to the right.</p>
+            
+            <div class="usecase-box">
+                <strong>🎯 Deep Use Case:</strong> Use sparingly. Only used if you absolutely must insert in the middle of a small array.
+            </div>
+            
+            <div class="example-block">
+                <div class="example-title">Examples</div>
+                <pre><code>// Ex 1: Insert at beginning\nvector<int> v = {2, 3};\nv.insert(v.begin(), 1); // {1, 2, 3}</code></pre><pre><code>// Ex 2: Insert multiple copies\nv.insert(v.begin() + 1, 3, 99); // {1, 99, 99, 99, 2, 3}</code></pre>
+            </div>
+        </div>
+        
+        <div class="method-card">
+            <div class="method-header">
+                <span class="method-name">erase(iterator)</span>
+                <span class="method-comp complexity-on">O(N)</span>
+            </div>
+            
+            <p><strong>Description:</strong> Removes element. Shifts everything left.</p>
+            
+            <div class="usecase-box">
+                <strong>🎯 Deep Use Case:</strong> Removing a specific element from the middle of an array when order must be preserved.
+            </div>
+            
+            <div class="example-block">
+                <div class="example-title">Examples</div>
+                <pre><code>// Ex 1: Erase a single element\nvector<int> v = {10, 20, 30, 40};\nv.erase(v.begin() + 1); // Removes 20 -> {10, 30, 40}</code></pre><pre><code>// Ex 2: Erase a range\nv.erase(v.begin(), v.begin() + 2); // Removes first 2 elements</code></pre>
+            </div>
+        </div>
+        
+    </section>
+    
+    <section id="list">
+        <h2>std::list <span class="header_badge">#include <list></span></h2>
+        
+        <p><strong>Under the hood:</strong> A Doubly Linked List. Elements are scattered in memory, connected via pointers. There is NO contiguous memory, which means you CANNOT access elements via index (e.g., l[5] is a compile error).</p>
+        
+        <div class="info-box">
+            <h4>🎯 General Use Case</h4>
+            <p>Use when you have massive amounts of insertions and deletions in the MIDDLE or FRONT of the container, provided you already have an iterator pointing to that location.</p>
+        </div>
+        
+        
+        <div class="syntax-box">
+            <h4><span style="font-size: 1.2em;">💻</span> Initialization Syntax</h4>
+            <pre style="background: rgba(0,0,0,0.2); border: none; margin-bottom: 0;"><code>list&lt;DataType&gt; listName;
+list&lt;DataType&gt; listName = {val1, val2, val3};</code></pre>
+        </div>
+        
+        
+        
+        <div class="danger-box">
+            <h4><span style="font-size: 1.2em;">⚠</span> Watch Out</h4>
+            <p>Do NOT use if you need random access. Poor CPU cache locality compared to vector. High memory overhead per element.</p>
+        </div>
+        
+        
+        <h3>Detailed Methods & Examples</h3>
+        
+        <div class="method-card">
+            <div class="method-header">
+                <span class="method-name">push_front(val) / pop_front()</span>
+                <span class="method-comp complexity-o1">O(1)</span>
+            </div>
+            
+            <p><strong>Description:</strong> Adds or removes element to/from the beginning instantly.</p>
+            
+            <div class="usecase-box">
+                <strong>🎯 Deep Use Case:</strong> Building a custom Deque, or prepending items to a linked list.
+            </div>
+            
+            <div class="example-block">
+                <div class="example-title">Examples</div>
+                <pre><code>// Ex 1: Push front\nlist<int> l;\nl.push_front(10);\nl.push_front(20); // {20, 10}</code></pre><pre><code>// Ex 2: Pop front\nl.pop_front(); // {10}</code></pre>
+            </div>
+        </div>
+        
+        <div class="method-card">
+            <div class="method-header">
+                <span class="method-name">push_back(val) / pop_back()</span>
+                <span class="method-comp complexity-o1">O(1)</span>
+            </div>
+            
+            <p><strong>Description:</strong> Adds or removes element to/from the end instantly.</p>
+            
+            <div class="usecase-box">
+                <strong>🎯 Deep Use Case:</strong> Standard queue-like behavior.
+            </div>
+            
+            <div class="example-block">
+                <div class="example-title">Examples</div>
+                <pre><code>// Ex 1: Push back\nlist<int> l;\nl.push_back(10);\nl.push_back(20); // {10, 20}</code></pre>
+            </div>
+        </div>
+        
+        <div class="method-card">
+            <div class="method-header">
+                <span class="method-name">insert(iterator, val)</span>
+                <span class="method-comp complexity-o1">O(1)</span>
+            </div>
+            
+            <p><strong>Description:</strong> Inserts before iterator instantly (unlike vector, which is O(N)).</p>
+            
+            <div class="usecase-box">
+                <strong>🎯 Deep Use Case:</strong> The main reason to use a list. If you know exactly where a node belongs, insertion costs zero shifting.
+            </div>
+            
+            <div class="example-block">
+                <div class="example-title">Examples</div>
+                <pre><code>// Ex 1: Insert in middle\nlist<int> l = {10, 30};\nauto it = l.begin();\nit++; // Point to 30\nl.insert(it, 20); // {10, 20, 30} in O(1) time</code></pre>
+            </div>
+        </div>
+        
+        <div class="method-card">
+            <div class="method-header">
+                <span class="method-name">erase(iterator)</span>
+                <span class="method-comp complexity-o1">O(1)</span>
+            </div>
+            
+            <p><strong>Description:</strong> Removes element instantly.</p>
+            
+            <div class="usecase-box">
+                <strong>🎯 Deep Use Case:</strong> Removing an item without shifting arrays. Crucial for LRU cache eviction.
+            </div>
+            
+            <div class="example-block">
+                <div class="example-title">Examples</div>
+                <pre><code>// Ex 1: Erase second element\nauto it = ++l.begin();\nl.erase(it); // O(1) removal</code></pre>
+            </div>
+        </div>
+        
+        <div class="method-card">
+            <div class="method-header">
+                <span class="method-name">splice(iterator, list2)</span>
+                <span class="method-comp complexity-o1">O(1)</span>
+            </div>
+            
+            <p><strong>Description:</strong> Transfers all elements from list2 into the calling list without reallocating any memory. It just re-assigns the pointers.</p>
+            
+            <div class="usecase-box">
+                <strong>🎯 Deep Use Case:</strong> Moving nodes around instantly. This is the secret to building a highly optimized O(1) LRU Cache (moving accessed item to the front of the MRU list).
+            </div>
+            
+            <div class="example-block">
+                <div class="example-title">Examples</div>
+                <pre><code>// Ex 1: Moving a specific node to the front\nlist<int> lru = {3, 2, 1};\nauto it = ++lru.begin(); // points to 2\nlru.splice(lru.begin(), lru, it); // {2, 3, 1}</code></pre>
+            </div>
+        </div>
+        
+        <div class="method-card">
+            <div class="method-header">
+                <span class="method-name">sort()</span>
+                <span class="method-comp complexity-on">O(N log N)</span>
+            </div>
+            
+            <p><strong>Description:</strong> Special list sort (std::sort requires random access, so you MUST use list's built-in .sort()).</p>
+            
+            <div class="usecase-box">
+                <strong>🎯 Deep Use Case:</strong> Sorting a linked list.
+            </div>
+            
+            <div class="example-block">
+                <div class="example-title">Examples</div>
+                <pre><code>// Ex 1: Sorting\nlist<int> l = {5, 2, 8};\nl.sort(); // {2, 5, 8}</code></pre><pre><code>// Ex 2: Descending sort\nl.sort(greater<int>()); // {8, 5, 2}</code></pre>
+            </div>
+        </div>
+        
+    </section>
+    
+    <section id="deque">
+        <h2>std::deque <span class="header_badge">#include <deque></span></h2>
+        
+        <p><strong>Under the hood:</strong> A Double-Ended Queue. Think of it as an array of fixed-size arrays. It allows fast O(1) insertion/deletion at BOTH ends, and also provides random access via index `dq[i]`.</p>
+        
+        <div class="info-box">
+            <h4>🎯 General Use Case</h4>
+            <p>Use exactly like a Vector, but when you specifically need to add or remove elements from the FRONT frequently.</p>
+        </div>
+        
+        
+        <div class="syntax-box">
+            <h4><span style="font-size: 1.2em;">💻</span> Initialization Syntax</h4>
+            <pre style="background: rgba(0,0,0,0.2); border: none; margin-bottom: 0;"><code>deque&lt;DataType&gt; dq;
+deque&lt;DataType&gt; dq(size, initialValue);</code></pre>
+        </div>
+        
+        
+        
+        <div class="danger-box">
+            <h4><span style="font-size: 1.2em;">⚠</span> Watch Out</h4>
+            <p>Insertion in the middle still takes O(N). Memory overhead is slightly higher than vector.</p>
+        </div>
+        
+        
+        <h3>Detailed Methods & Examples</h3>
+        
+        <div class="method-card">
+            <div class="method-header">
+                <span class="method-name">push_front(val) / pop_front()</span>
+                <span class="method-comp complexity-o1">O(1)</span>
+            </div>
+            
+            <p><strong>Description:</strong> Adds/Removes element to/from the front.</p>
+            
+            <div class="usecase-box">
+                <strong>🎯 Deep Use Case:</strong> Sliding Window Maximum problem. You need to maintain a monotonic decreasing queue and pop elements from the front that fall out of the sliding window.
+            </div>
+            
+            <div class="example-block">
+                <div class="example-title">Examples</div>
+                <pre><code>// Ex 1: Deque front operations\ndeque<int> dq;\ndq.push_front(1);\ndq.push_front(2); // {2, 1}</code></pre><pre><code>// Ex 2: Sliding Window Pattern\nif(!dq.empty() && dq.front() == outOfWindowElement) {\n    dq.pop_front();\n}</code></pre>
+            </div>
+        </div>
+        
+        <div class="method-card">
+            <div class="method-header">
+                <span class="method-name">push_back(val) / pop_back()</span>
+                <span class="method-comp complexity-o1">O(1)</span>
+            </div>
+            
+            <p><strong>Description:</strong> Adds/Removes element to/from the back.</p>
+            
+            <div class="usecase-box">
+                <strong>🎯 Deep Use Case:</strong> Also Sliding Window Maximum: popping elements from the back that are strictly less than the new element being added.
+            </div>
+            
+            <div class="example-block">
+                <div class="example-title">Examples</div>
+                <pre><code>// Ex 1: Monotonic Queue maintenance\nwhile(!dq.empty() && dq.back() < currentVal) {\n    dq.pop_back();\n}\ndq.push_back(currentVal);</code></pre>
+            </div>
+        </div>
+        
+        <div class="method-card">
+            <div class="method-header">
+                <span class="method-name">dq[i]</span>
+                <span class="method-comp complexity-o1">O(1)</span>
+            </div>
+            
+            <p><strong>Description:</strong> Random access by index. (Unlike std::list)</p>
+            
+            <div class="usecase-box">
+                <strong>🎯 Deep Use Case:</strong> When you need queue capabilities but still want to inspect the N-th element.
+            </div>
+            
+            <div class="example-block">
+                <div class="example-title">Examples</div>
+                <pre><code>// Ex 1: Index access\ndeque<int> dq = {10, 20, 30};\ncout << dq[1]; // Prints 20</code></pre>
+            </div>
+        </div>
+        
+    </section>
+    
+    <section id="set">
+        <h2>std::set & std::multiset <span class="header_badge">#include <set></span></h2>
+        
+        <p><strong>Under the hood:</strong> Implemented as a Red-Black Tree (Self-Balancing Binary Search Tree). Elements are ALWAYS strictly sorted. `set` stores only UNIQUE elements. `multiset` allows DUPLICATE elements.</p>
+        
+        <div class="info-box">
+            <h4>🎯 General Use Case</h4>
+            <p>Use when you need to store elements and constantly query the minimum, maximum, or closest values dynamically as elements are added or removed.</p>
+        </div>
+        
+        
+        <div class="syntax-box">
+            <h4><span style="font-size: 1.2em;">💻</span> Initialization Syntax</h4>
+            <pre style="background: rgba(0,0,0,0.2); border: none; margin-bottom: 0;"><code>set&lt;DataType&gt; setName;
+multiset&lt;DataType&gt; multisetName;
+set&lt;DataType, greater&lt;DataType&gt;&gt; descendingSet;</code></pre>
+        </div>
+        
+        
+        
+        <div class="danger-box">
+            <h4><span style="font-size: 1.2em;">⚠</span> Watch Out</h4>
+            <p>Do NOT use if you just need to check if an element exists quickly and don't care about sorting. Use `unordered_set` instead (O(1) vs O(log N)).</p>
+        </div>
+        
+        
+        <h3>Detailed Methods & Examples</h3>
+        
+        <div class="method-card">
+            <div class="method-header">
+                <span class="method-name">insert(val)</span>
+                <span class="method-comp complexity-olgn">O(log N)</span>
+            </div>
+            
+            <p><strong>Description:</strong> Inserts element in its sorted position. If set, ignores duplicates.</p>
+            
+            <div class="usecase-box">
+                <strong>🎯 Deep Use Case:</strong> Dynamically keeping a running stream of numbers perfectly sorted.
+            </div>
+            
+            <div class="example-block">
+                <div class="example-title">Examples</div>
+                <pre><code>// Ex 1: Auto sorting\nset<int> s;\ns.insert(50);\ns.insert(20); // Internally sorts to {20, 50}</code></pre><pre><code>// Ex 2: Multiset duplicates\nmultiset<int> ms;\nms.insert(10); ms.insert(10); // {10, 10}</code></pre>
+            </div>
+        </div>
+        
+        <div class="method-card">
+            <div class="method-header">
+                <span class="method-name">erase(val)</span>
+                <span class="method-comp complexity-olgn">O(log N)</span>
+            </div>
+            
+            <p><strong>Description:</strong> Removes the element. WARNING: In multiset, passing a value removes ALL instances of that value.</p>
+            
+            <div class="usecase-box">
+                <strong>🎯 Deep Use Case:</strong> Standard removal from a binary search tree.
+            </div>
+            
+            <div class="example-block">
+                <div class="example-title">Examples</div>
+                <pre><code>// Ex 1: Standard erase\nset<int> s = {1, 2, 3};\ns.erase(2); // {1, 3}</code></pre><pre><code>// Ex 2: Multiset Trap\nmultiset<int> ms = {1, 1, 1, 2};\nms.erase(1); // ms is now {2}. ALL 1s are gone!</code></pre>
+            </div>
+        </div>
+        
+        <div class="method-card">
+            <div class="method-header">
+                <span class="method-name">erase(iterator)</span>
+                <span class="method-comp complexity-o1">Amortized O(1)</span>
+            </div>
+            
+            <p><strong>Description:</strong> Removes exactly one element pointed to by the iterator.</p>
+            
+            <div class="usecase-box">
+                <strong>🎯 Deep Use Case:</strong> Crucial for multiset! When sliding a window, you want to remove exactly ONE instance of the outgoing number.
+            </div>
+            
+            <div class="example-block">
+                <div class="example-title">Examples</div>
+                <pre><code>// Ex 1: Multiset Safe Erase (ONE instance)\nmultiset<int> ms = {1, 1, 1, 2};\nms.erase(ms.find(1)); // ms is now {1, 1, 2}</code></pre>
+            </div>
+        </div>
+        
+        <div class="method-card">
+            <div class="method-header">
+                <span class="method-name">find(val) / count(val)</span>
+                <span class="method-comp complexity-olgn">O(log N)</span>
+            </div>
+            
+            <p><strong>Description:</strong> find() returns an iterator. count() returns the number of occurrences.</p>
+            
+            <div class="usecase-box">
+                <strong>🎯 Deep Use Case:</strong> Checking existence in a sorted collection. count() is great for finding frequency in a multiset.
+            </div>
+            
+            <div class="example-block">
+                <div class="example-title">Examples</div>
+                <pre><code>// Ex 1: Checking existence\nif(s.find(5) != s.end()) cout << "Found!";</code></pre><pre><code>// Ex 2: Frequency check\nmultiset<int> ms = {5, 5, 5};\ncout << ms.count(5); // 3</code></pre>
+            </div>
+        </div>
+        
+        <div class="method-card">
+            <div class="method-header">
+                <span class="method-name">lower_bound(val)</span>
+                <span class="method-comp complexity-olgn">O(log N)</span>
+            </div>
+            
+            <p><strong>Description:</strong> Returns iterator to FIRST element that is >= val.</p>
+            
+            <div class="usecase-box">
+                <strong>🎯 Deep Use Case:</strong> Finding the smallest available box that can fit a package of size `val`.
+            </div>
+            
+            <div class="example-block">
+                <div class="example-title">Examples</div>
+                <pre><code>// Ex 1: Lower bound\nset<int> s = {10, 20, 30};\nauto it = s.lower_bound(15);\ncout << *it; // Prints 20</code></pre><pre><code>// Ex 2: Exact match\nauto it2 = s.lower_bound(20);\ncout << *it2; // Prints 20</code></pre>
+            </div>
+        </div>
+        
+        <div class="method-card">
+            <div class="method-header">
+                <span class="method-name">upper_bound(val)</span>
+                <span class="method-comp complexity-olgn">O(log N)</span>
+            </div>
+            
+            <p><strong>Description:</strong> Returns iterator to FIRST element that is strictly > val.</p>
+            
+            <div class="usecase-box">
+                <strong>🎯 Deep Use Case:</strong> Finding the next strictly larger element in a sorted tree.
+            </div>
+            
+            <div class="example-block">
+                <div class="example-title">Examples</div>
+                <pre><code>// Ex 1: Upper bound\nset<int> s = {10, 20, 30};\nauto it = s.upper_bound(20);\ncout << *it; // Prints 30</code></pre>
+            </div>
+        </div>
+        
+        <div class="method-card">
+            <div class="method-header">
+                <span class="method-name">begin() / end() / rbegin() / rend()</span>
+                <span class="method-comp complexity-o1">O(1)</span>
+            </div>
+            
+            <p><strong>Description:</strong> Iterators for the tree. *begin() gives the smallest element. *rbegin() gives the largest.</p>
+            
+            <div class="usecase-box">
+                <strong>🎯 Deep Use Case:</strong> Instantly retrieving the global minimum or maximum from the dynamically sorted tree.
+            </div>
+            
+            <div class="example-block">
+                <div class="example-title">Examples</div>
+                <pre><code>// Ex 1: Get Minimum element\ncout << *s.begin();</code></pre><pre><code>// Ex 2: Get Maximum element\ncout << *s.rbegin();</code></pre>
+            </div>
+        </div>
+        
+    </section>
+    
+    <section id="map">
+        <h2>std::map & std::multimap <span class="header_badge">#include <map></span></h2>
+        
+        <p><strong>Under the hood:</strong> Implemented as a Red-Black Tree. Stores Key-Value pairs. It guarantees that the Keys are strictly sorted. All operations are O(log N).</p>
+        
+        <div class="info-box">
+            <h4>🎯 General Use Case</h4>
+            <p>Use when you need a dictionary, but you explicitly need to iterate over the keys in sorted order, or you need to find the `lower_bound` of a Key.</p>
+        </div>
+        
+        
+        <div class="syntax-box">
+            <h4><span style="font-size: 1.2em;">💻</span> Initialization Syntax</h4>
+            <pre style="background: rgba(0,0,0,0.2); border: none; margin-bottom: 0;"><code>map&lt;KeyType, ValueType&gt; mapName;
+map&lt;KeyType, ValueType, greater&lt;KeyType&gt;&gt; descendingMap;</code></pre>
+        </div>
+        
+        
+        
+        <div class="danger-box">
+            <h4><span style="font-size: 1.2em;">⚠</span> Watch Out</h4>
+            <p>Do NOT use just for counting frequencies. `unordered_map` is significantly faster.</p>
+        </div>
+        
+        
+        <h3>Detailed Methods & Examples</h3>
+        
+        <div class="method-card">
+            <div class="method-header">
+                <span class="method-name">m[key] = val</span>
+                <span class="method-comp complexity-olgn">O(log N)</span>
+            </div>
+            
+            <p><strong>Description:</strong> Inserts or updates value for key.</p>
+            
+            <div class="usecase-box">
+                <strong>🎯 Deep Use Case:</strong> Mapping a sorted timeline of keys to specific values.
+            </div>
+            
+            <div class="example-block">
+                <div class="example-title">Examples</div>
+                <pre><code>// Ex 1: Basic insertion\nmap<int, string> m;\nm[20] = "Apple";\nm[10] = "Banana"; // Keys are sorted 10 -> 20</code></pre>
+            </div>
+        </div>
+        
+        <div class="method-card">
+            <div class="method-header">
+                <span class="method-name">insert({key, val})</span>
+                <span class="method-comp complexity-olgn">O(log N)</span>
+            </div>
+            
+            <p><strong>Description:</strong> Inserts pair. Fails silently if key already exists.</p>
+            
+            <div class="usecase-box">
+                <strong>🎯 Deep Use Case:</strong> When you want to ensure you don't accidentally overwrite an existing value for a key.
+            </div>
+            
+            <div class="example-block">
+                <div class="example-title">Examples</div>
+                <pre><code>// Ex 1: Safe insert\nm.insert({10, "Cherry"}); // Does nothing if 10 exists</code></pre>
+            </div>
+        </div>
+        
+        <div class="method-card">
+            <div class="method-header">
+                <span class="method-name">erase(key)</span>
+                <span class="method-comp complexity-olgn">O(log N)</span>
+            </div>
+            
+            <p><strong>Description:</strong> Removes key and its value.</p>
+            
+            <div class="usecase-box">
+                <strong>🎯 Deep Use Case:</strong> Removing an entry from the sorted dictionary.
+            </div>
+            
+            <div class="example-block">
+                <div class="example-title">Examples</div>
+                <pre><code>// Ex 1: Erasing by key\nm.erase(10);</code></pre>
+            </div>
+        </div>
+        
+        <div class="method-card">
+            <div class="method-header">
+                <span class="method-name">lower_bound(key)</span>
+                <span class="method-comp complexity-olgn">O(log N)</span>
+            </div>
+            
+            <p><strong>Description:</strong> Finds first Pair with Key >= key.</p>
+            
+            <div class="usecase-box">
+                <strong>🎯 Deep Use Case:</strong> Time-based key-value store. E.g., 'What was the value of X at timestamp T, or the closest timestamp after T?'
+            </div>
+            
+            <div class="example-block">
+                <div class="example-title">Examples</div>
+                <pre><code>// Ex 1: Map lower bound\nmap<int, string> m = {{10, "A"}, {30, "B"}};\nauto it = m.lower_bound(20);\ncout << it->first << "-" << it->second; // 30-B</code></pre>
+            </div>
+        </div>
+        
+    </section>
+    
+    <section id="unordered_map">
+        <h2>std::unordered_map & unordered_set <span class="header_badge">#include <unordered_map> / <unordered_set></span></h2>
+        
+        <p><strong>Under the hood:</strong> Implemented using a Hash Table. Keys are hashed to buckets. Zero ordering. Average time complexity is purely O(1).</p>
+        
+        <div class="info-box">
+            <h4>🎯 General Use Case</h4>
+            <p>The ultimate containers for frequency counting, caching, Memoization, and simple existence checks.</p>
+        </div>
+        
+        
+        <div class="syntax-box">
+            <h4><span style="font-size: 1.2em;">💻</span> Initialization Syntax</h4>
+            <pre style="background: rgba(0,0,0,0.2); border: none; margin-bottom: 0;"><code>unordered_map&lt;KeyType, ValueType&gt; mapName;
+unordered_set&lt;DataType&gt; setName;</code></pre>
+        </div>
+        
+        
+        
+        
+        <h3>Detailed Methods & Examples</h3>
+        
+        <div class="method-card">
+            <div class="method-header">
+                <span class="method-name">m[key] = val</span>
+                <span class="method-comp complexity-o1">Avg O(1)</span>
+            </div>
+            
+            <p><strong>Description:</strong> Accesses or inserts a value. WARNING: Accessing a non-existent key inserts it with a default value (like 0).</p>
+            
+            <div class="usecase-box">
+                <strong>🎯 Deep Use Case:</strong> Counting frequencies of elements in an array, or caching results in Dynamic Programming (Memoization).
+            </div>
+            
+            <div class="example-block">
+                <div class="example-title">Examples</div>
+                <pre><code>// Ex 1: Frequency Array\nunordered_map<int, int> freq;\nvector<int> nums = {1, 2, 2, 3};\nfor(int num : nums) freq[num]++;</code></pre><pre><code>// Ex 2: DP Memoization\nunordered_map<int, int> memo;\nint fib(int n) {\n  if(memo.count(n)) return memo[n];\n  return memo[n] = fib(n-1) + fib(n-2);\n}</code></pre>
+            </div>
+        </div>
+        
+        <div class="method-card">
+            <div class="method-header">
+                <span class="method-name">find(key)</span>
+                <span class="method-comp complexity-o1">Avg O(1)</span>
+            </div>
+            
+            <p><strong>Description:</strong> Returns an iterator to the pair. Returns m.end() if missing. Does NOT create a new key.</p>
+            
+            <div class="usecase-box">
+                <strong>🎯 Deep Use Case:</strong> Checking if you have seen a number before, like in the classic 'Two Sum' problem.
+            </div>
+            
+            <div class="example-block">
+                <div class="example-title">Examples</div>
+                <pre><code>// Ex 1: Two Sum logic using find\nunordered_map<int, int> seen; // value -> index\nfor(int i=0; i<nums.size(); i++) {\n  int needed = target - nums[i];\n  if(seen.find(needed) != seen.end()) {\n    return {seen[needed], i};\n  }\n  seen[nums[i]] = i;\n}</code></pre>
+            </div>
+        </div>
+        
+        <div class="method-card">
+            <div class="method-header">
+                <span class="method-name">count(key)</span>
+                <span class="method-comp complexity-o1">Avg O(1)</span>
+            </div>
+            
+            <p><strong>Description:</strong> Returns 1 if exists, 0 otherwise.</p>
+            
+            <div class="usecase-box">
+                <strong>🎯 Deep Use Case:</strong> A cleaner syntax than find() when you just need a boolean existence check.
+            </div>
+            
+            <div class="example-block">
+                <div class="example-title">Examples</div>
+                <pre><code>// Ex 1: Clean existence check\nif(seen.count(needed)) { return true; }</code></pre><pre><code>// Ex 2: unordered_set check\nunordered_set<int> mySet = {1, 5, 9};\nif(mySet.count(5)) { cout << "Exists!"; }</code></pre>
+            </div>
+        </div>
+        
+        <div class="method-card">
+            <div class="method-header">
+                <span class="method-name">erase(key)</span>
+                <span class="method-comp complexity-o1">Avg O(1)</span>
+            </div>
+            
+            <p><strong>Description:</strong> Removes the key-value pair from the hash table.</p>
+            
+            <div class="usecase-box">
+                <strong>🎯 Deep Use Case:</strong> Removing seen elements, or backtracking state.
+            </div>
+            
+            <div class="example-block">
+                <div class="example-title">Examples</div>
+                <pre><code>// Ex 1: Removing a cached value\nmemo.erase(n);</code></pre>
+            </div>
+        </div>
+        
+    </section>
+    
+    <section id="stack">
+        <h2>std::stack <span class="header_badge">#include <stack></span></h2>
+        
+        <p><strong>Under the hood:</strong> A Container Adaptor restricting access to LIFO (Last In, First Out).</p>
+        
+        <div class="info-box">
+            <h4>🎯 General Use Case</h4>
+            <p>Use for Monotonic Stacks (Next Greater Element), Valid Parentheses, Iterative DFS.</p>
+        </div>
+        
+        
+        <div class="syntax-box">
+            <h4><span style="font-size: 1.2em;">💻</span> Initialization Syntax</h4>
+            <pre style="background: rgba(0,0,0,0.2); border: none; margin-bottom: 0;"><code>stack&lt;DataType&gt; stackName;
+stack&lt;pair&lt;int, int&gt;&gt; stackOfPairs;</code></pre>
+        </div>
+        
+        
+        
+        
+        <h3>Detailed Methods & Examples</h3>
+        
+        <div class="method-card">
+            <div class="method-header">
+                <span class="method-name">push(val) / pop() / top()</span>
+                <span class="method-comp complexity-o1">O(1)</span>
+            </div>
+            
+            <p><strong>Description:</strong> Push adds to top. Pop removes top (returns void). Top gets value at top.</p>
+            
+            <div class="usecase-box">
+                <strong>🎯 Deep Use Case:</strong> Validating expressions or running a Monotonic Stack to find the Next Greater Element.
+            </div>
+            
+            <div class="example-block">
+                <div class="example-title">Examples</div>
+                <pre><code>// Ex 1: Valid Parentheses\nstack<char> st;\nfor(char c : s) {\n  if(c == '(') st.push(c);\n  else if(!st.empty() && st.top() == '(') st.pop();\n}</code></pre><pre><code>// Ex 2: Monotonic Decreasing Stack\nstack<int> st;\nwhile(!st.empty() && st.top() < current) {\n    cout << "Next greater is " << current;\n    st.pop();\n}\nst.push(current);</code></pre>
+            </div>
+        </div>
+        
+        <div class="method-card">
+            <div class="method-header">
+                <span class="method-name">empty() / size()</span>
+                <span class="method-comp complexity-o1">O(1)</span>
+            </div>
+            
+            <p><strong>Description:</strong> Checks if size is 0 / returns number of elements.</p>
+            
+            <div class="usecase-box">
+                <strong>🎯 Deep Use Case:</strong> ALWAYS use empty() before calling top() or pop(), or your program will crash.
+            </div>
+            
+            <div class="example-block">
+                <div class="example-title">Examples</div>
+                <pre><code>// Ex 1: Safe pop\nif(!st.empty()) { st.pop(); }</code></pre>
+            </div>
+        </div>
+        
+    </section>
+    
+    <section id="queue">
+        <h2>std::queue <span class="header_badge">#include <queue></span></h2>
+        
+        <p><strong>Under the hood:</strong> A Container Adaptor following FIFO (First In, First Out).</p>
+        
+        <div class="info-box">
+            <h4>🎯 General Use Case</h4>
+            <p>The core data structure for Breadth First Search (BFS) in trees and graphs.</p>
+        </div>
+        
+        
+        <div class="syntax-box">
+            <h4><span style="font-size: 1.2em;">💻</span> Initialization Syntax</h4>
+            <pre style="background: rgba(0,0,0,0.2); border: none; margin-bottom: 0;"><code>queue&lt;DataType&gt; queueName;
+queue&lt;TreeNode*&gt; treeQueue;</code></pre>
+        </div>
+        
+        
+        
+        
+        <h3>Detailed Methods & Examples</h3>
+        
+        <div class="method-card">
+            <div class="method-header">
+                <span class="method-name">push(val) / pop() / front()</span>
+                <span class="method-comp complexity-o1">O(1)</span>
+            </div>
+            
+            <p><strong>Description:</strong> Push adds to back. Pop removes from front. Front gets first element.</p>
+            
+            <div class="usecase-box">
+                <strong>🎯 Deep Use Case:</strong> Level order traversal of a binary tree or graph.
+            </div>
+            
+            <div class="example-block">
+                <div class="example-title">Examples</div>
+                <pre><code>// Ex 1: BFS using Queue\nqueue<TreeNode*> q;\nq.push(root);\nwhile(!q.empty()) {\n  TreeNode* node = q.front(); q.pop();\n  if(node->left) q.push(node->left);\n  if(node->right) q.push(node->right);\n}</code></pre>
+            </div>
+        </div>
+        
+    </section>
+    
+    <section id="priority_queue">
+        <h2>std::priority_queue <span class="header_badge">#include <queue></span></h2>
+        
+        <p><strong>Under the hood:</strong> A Binary Heap. It ensures that the 'largest' (or 'smallest') element is always at the top. Built on top of a vector.</p>
+        
+        <div class="info-box">
+            <h4>🎯 General Use Case</h4>
+            <p>Dijkstra's Algorithm, Top K elements, finding running median.</p>
+        </div>
+        
+        
+        <div class="syntax-box">
+            <h4><span style="font-size: 1.2em;">💻</span> Initialization Syntax</h4>
+            <pre style="background: rgba(0,0,0,0.2); border: none; margin-bottom: 0;"><code>// Max Heap (Largest at top)
+priority_queue&lt;int&gt; maxHeap;
+
+// Min Heap (Smallest at top - MEMORIZE THIS!)
+priority_queue&lt;int, vector&lt;int&gt;, greater&lt;int&gt;&gt; minHeap;
+
+// Min Heap for Pairs (Sorts by first element ascending)
+priority_queue&lt;pair&lt;int,int&gt;, vector&lt;pair&lt;int,int&gt;&gt;, greater&lt;pair&lt;int,int&gt;&gt;&gt; pq;</code></pre>
+        </div>
+        
+        
+        
+        
+        <h3>Detailed Methods & Examples</h3>
+        
+        <div class="method-card">
+            <div class="method-header">
+                <span class="method-name">push(val) / pop()</span>
+                <span class="method-comp complexity-olgn">O(log N)</span>
+            </div>
+            
+            <p><strong>Description:</strong> Inserts element and sifts up/down to maintain heap property.</p>
+            
+            <div class="usecase-box">
+                <strong>🎯 Deep Use Case:</strong> Continually feeding data into a Top K elements tracker.
+            </div>
+            
+            <div class="example-block">
+                <div class="example-title">Examples</div>
+                <pre><code>// Ex 1: Maintaining Top 3 elements (using Min Heap)\npriority_queue<int, vector<int>, greater<int>> minHeap;\nminHeap.push(val);\nif(minHeap.size() > 3) minHeap.pop(); // Toss out the smallest</code></pre>
+            </div>
+        </div>
+        
+        <div class="method-card">
+            <div class="method-header">
+                <span class="method-name">top()</span>
+                <span class="method-comp complexity-o1">O(1)</span>
+            </div>
+            
+            <p><strong>Description:</strong> Returns reference to the highest priority element.</p>
+            
+            <div class="usecase-box">
+                <strong>🎯 Deep Use Case:</strong> Extracting the node with the minimum distance in Dijkstra's.
+            </div>
+            
+            <div class="example-block">
+                <div class="example-title">Examples</div>
+                <pre><code>// Ex 1: Min Heap syntax\npriority_queue<int, vector<int>, greater<int>> minHeap;\ncout << minHeap.top();</code></pre><pre><code>// Ex 2: Using the pair\nauto [dist, node] = pq.top(); pq.pop();</code></pre>
+            </div>
+        </div>
+        
+    </section>
+    
+    <section id="pairs">
+        <h2>std::pair & std::tuple <span class="header_badge">#include <utility></span></h2>
+        
+        <p><strong>Under the hood:</strong> Simple structs to bundle multiple values together.</p>
+        
+        <div class="info-box">
+            <h4>🎯 General Use Case</h4>
+            <p>Returning two values from a function, storing coordinates (x,y) in queues for BFS.</p>
+        </div>
+        
+        
+        <div class="syntax-box">
+            <h4><span style="font-size: 1.2em;">💻</span> Initialization Syntax</h4>
+            <pre style="background: rgba(0,0,0,0.2); border: none; margin-bottom: 0;"><code>pair&lt;DataType1, DataType2&gt; p;
+pair&lt;int, string&gt; p = {1, "Hello"};
+
+// For tuples (&gt; 2 values):
+#include &lt;tuple&gt;
+tuple&lt;int, int, string&gt; t = {1, 2, "Hello"};</code></pre>
+        </div>
+        
+        
+        
+        
+        <h3>Detailed Methods & Examples</h3>
+        
+        <div class="method-card">
+            <div class="method-header">
+                <span class="method-name">make_pair(a, b) / {a, b}</span>
+                <span class="method-comp complexity-o1">O(1)</span>
+            </div>
+            
+            <p><strong>Description:</strong> Creates a pair.</p>
+            
+            <div class="usecase-box">
+                <strong>🎯 Deep Use Case:</strong> Bundling a grid coordinate (row, col) to put inside a queue for BFS.
+            </div>
+            
+            <div class="example-block">
+                <div class="example-title">Examples</div>
+                <pre><code>// Ex 1: Pair creation\npair<int, string> p = {1, "apple"};</code></pre><pre><code>// Ex 2: Graph BFS coordinate\nqueue<pair<int,int>> q;\nq.push({0, 0});</code></pre>
+            </div>
+        </div>
+        
+        <div class="method-card">
+            <div class="method-header">
+                <span class="method-name">p.first / p.second</span>
+                <span class="method-comp complexity-o1">O(1)</span>
+            </div>
+            
+            <p><strong>Description:</strong> Direct access to pair members.</p>
+            
+            <div class="usecase-box">
+                <strong>🎯 Deep Use Case:</strong> Extracting the bundled data.
+            </div>
+            
+            <div class="example-block">
+                <div class="example-title">Examples</div>
+                <pre><code>// Ex 1: Extraction\ncout << p.first << " - " << p.second;</code></pre>
+            </div>
+        </div>
+        
+        <div class="method-card">
+            <div class="method-header">
+                <span class="method-name">get<i>(tuple)</span>
+                <span class="method-comp complexity-o1">O(1)</span>
+            </div>
+            
+            <p><strong>Description:</strong> Access tuple elements (for > 2 values).</p>
+            
+            <div class="usecase-box">
+                <strong>🎯 Deep Use Case:</strong> When you need to store (distance, row, col) in a priority queue.
+            </div>
+            
+            <div class="example-block">
+                <div class="example-title">Examples</div>
+                <pre><code>// Ex 1: Tuple usage\ntuple<int, int, string> t = {1, 2, "hello"};\ncout << get<2>(t); // "hello"</code></pre>
+            </div>
+        </div>
+        
+    </section>
+    
+    <section id="algorithms">
+        <h2>Algorithms <span class="header_badge">#include <algorithm> / <numeric></span></h2>
+        
+        <p><strong>Under the hood:</strong> Global functions operating on iterator ranges. They save you from writing standard loops.</p>
+        
+        <div class="info-box">
+            <h4>🎯 General Use Case</h4>
+            <p>Sorting, searching, and manipulating vectors efficiently.</p>
+        </div>
+        
+        
+        <div class="syntax-box">
+            <h4><span style="font-size: 1.2em;">💻</span> Initialization Syntax</h4>
+            <pre style="background: rgba(0,0,0,0.2); border: none; margin-bottom: 0;"><code>// No specific initialization, these are free functions.\n// Just ensure you include &lt;algorithm&gt; and &lt;numeric&gt;</code></pre>
+        </div>
+        
+        
+        
+        
+        <h3>Detailed Methods & Examples</h3>
+        
+        <div class="method-card">
+            <div class="method-header">
+                <span class="method-name">sort(begin, end, [comparator])</span>
+                <span class="method-comp complexity-on">O(N log N)</span>
+            </div>
+            
+            <p><strong>Description:</strong> Sorts the range using IntroSort.</p>
+            
+            <div class="usecase-box">
+                <strong>🎯 Deep Use Case:</strong> Preparing an array for Binary Search, or grouping anagrams.
+            </div>
+            
+            <div class="example-block">
+                <div class="example-title">Examples</div>
+                <pre><code>// Ex 1: Ascending\nvector<int> v = {3, 1, 4};\nsort(v.begin(), v.end());</code></pre><pre><code>// Ex 2: Descending\nsort(v.begin(), v.end(), greater<int>());</code></pre><pre><code>// Ex 3: Custom Lambda Comparator\nsort(v.begin(), v.end(), [](pair<int,int>& a, pair<int,int>& b) {\n    return a.second < b.second; // sort by 2nd element\n});</code></pre>
+            </div>
+        </div>
+        
+        <div class="method-card">
+            <div class="method-header">
+                <span class="method-name">binary_search(begin, end, val)</span>
+                <span class="method-comp complexity-olgn">O(log N)</span>
+            </div>
+            
+            <p><strong>Description:</strong> Returns true if value exists. Array MUST be sorted.</p>
+            
+            <div class="usecase-box">
+                <strong>🎯 Deep Use Case:</strong> Quick existence check in a pre-sorted dataset.
+            </div>
+            
+            <div class="example-block">
+                <div class="example-title">Examples</div>
+                <pre><code>// Ex 1: Basic usage\nbool exists = binary_search(v.begin(), v.end(), 5);</code></pre>
+            </div>
+        </div>
+        
+        <div class="method-card">
+            <div class="method-header">
+                <span class="method-name">lower_bound / upper_bound</span>
+                <span class="method-comp complexity-olgn">O(log N)</span>
+            </div>
+            
+            <p><strong>Description:</strong> Finds first element >= val (lower) or strictly > val (upper) in a sorted array.</p>
+            
+            <div class="usecase-box">
+                <strong>🎯 Deep Use Case:</strong> Finding insertion points or finding the closest element.
+            </div>
+            
+            <div class="example-block">
+                <div class="example-title">Examples</div>
+                <pre><code>// Ex 1: Getting iterator\nauto it = lower_bound(v.begin(), v.end(), 3);</code></pre><pre><code>// Ex 2: Getting exact INDEX\nint index = lower_bound(v.begin(), v.end(), 3) - v.begin();</code></pre>
+            </div>
+        </div>
+        
+        <div class="method-card">
+            <div class="method-header">
+                <span class="method-name">reverse(begin, end)</span>
+                <span class="method-comp complexity-on">O(N)</span>
+            </div>
+            
+            <p><strong>Description:</strong> Reverses the range in-place.</p>
+            
+            <div class="usecase-box">
+                <strong>🎯 Deep Use Case:</strong> Reversing a string or vector without manually swapping.
+            </div>
+            
+            <div class="example-block">
+                <div class="example-title">Examples</div>
+                <pre><code>// Ex 1: Reverse string\nstring s = "hello";\nreverse(s.begin(), s.end()); // "olleh"</code></pre>
+            </div>
+        </div>
+        
+        <div class="method-card">
+            <div class="method-header">
+                <span class="method-name">accumulate(begin, end, init)</span>
+                <span class="method-comp complexity-on">O(N)</span>
+            </div>
+            
+            <p><strong>Description:</strong> Sums the elements in the range.</p>
+            
+            <div class="usecase-box">
+                <strong>🎯 Deep Use Case:</strong> Quick summation without a for-loop.
+            </div>
+            
+            <div class="example-block">
+                <div class="example-title">Examples</div>
+                <pre><code>// Ex 1: Standard sum\nint sum = accumulate(v.begin(), v.end(), 0);</code></pre><pre><code>// Ex 2: Prevent Overflow with Long Long!\nlong long hugeSum = accumulate(v.begin(), v.end(), 0LL);</code></pre>
+            </div>
+        </div>
+        
+        <div class="method-card">
+            <div class="method-header">
+                <span class="method-name">next_permutation(begin, end)</span>
+                <span class="method-comp complexity-on">O(N)</span>
+            </div>
+            
+            <p><strong>Description:</strong> Rearranges the array to the next lexicographical permutation. Returns false if it was the last one.</p>
+            
+            <div class="usecase-box">
+                <strong>🎯 Deep Use Case:</strong> Generating all permutations of a string or array.
+            </div>
+            
+            <div class="example-block">
+                <div class="example-title">Examples</div>
+                <pre><code>// Ex 1: Generate all permutations\nvector<int> v = {1, 2, 3};\ndo {\n    // process v\n} while(next_permutation(v.begin(), v.end()));</code></pre>
+            </div>
+        </div>
+        
+        <div class="method-card">
+            <div class="method-header">
+                <span class="method-name">max_element / min_element</span>
+                <span class="method-comp complexity-on">O(N)</span>
+            </div>
+            
+            <p><strong>Description:</strong> Returns iterator to the max/min element.</p>
+            
+            <div class="usecase-box">
+                <strong>🎯 Deep Use Case:</strong> Finding extremums instantly.
+            </div>
+            
+            <div class="example-block">
+                <div class="example-title">Examples</div>
+                <pre><code>// Ex 1: Get Max Value\nint m = *max_element(v.begin(), v.end());</code></pre><pre><code>// Ex 2: Get Max Index\nint idx = max_element(v.begin(), v.end()) - v.begin();</code></pre>
+            </div>
+        </div>
+        
+    </section>
+    
+
+    </main>
+
+    <script>
+        document.querySelectorAll('.nav-links a:not(.back-link)').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                document.querySelectorAll('.nav-links a').forEach(a => a.classList.remove('active'));
+                this.classList.add('active');
+                const target = document.querySelector(this.getAttribute('href'));
+                window.scrollTo({
+                    top: target.offsetTop - 20,
+                    behavior: 'smooth'
+                });
+            });
+        });
+        
+        window.addEventListener('load', () => {
+            if(window.location.hash) {
+                const link = document.querySelector(`.nav-links a[href="${window.location.hash}"]`);
+                if(link) link.classList.add('active');
+            }
+        });
+    </script>
+</body>
+</html>
